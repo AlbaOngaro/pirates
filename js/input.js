@@ -1,0 +1,63 @@
+const KEY_LEFT_ARROW = 37;
+const KEY_UP_ARROW = 38;
+const KEY_RIGHT_ARROW = 39;
+const KEY_DOWN_ARROW = 40;
+
+var keyHeld_gas = false;
+var keyHeld_reverse = false;
+var keyHeld_TurnLeft = false;
+var keyHeld_TurnRight = false;
+
+var mouseX = 0;
+var mouseY = 0;
+
+function SetupInput () {
+    canvas.addEventListener('mousemove', updateMousePos);
+    
+    document.addEventListener('keydown',keyPressed);
+    document.addEventListener('keyup',keyReleased);
+}
+
+function updateMousePos(evt) {
+	var rect = canvas.getBoundingClientRect();
+	var root = document.documentElement;
+
+	mouseX = evt.clientX - rect.left - root.scrollLeft;
+	mouseY = evt.clientY - rect.top - root.scrollTop;
+
+	// cheat / hack to test ship in any position
+	/*shipX = mouseX;
+	shipY = mouseY;
+	shipSpeedX = 4;
+	shipSpeedY = -4;*/
+}
+
+function keyPressed(evt) {
+    if (evt.keyCode == KEY_LEFT_ARROW) {
+        keyHeld_TurnLeft = true;
+    } 
+    if (evt.keyCode == KEY_RIGHT_ARROW) {
+        keyHeld_TurnRight = true;
+    } 
+    if (evt.keyCode == KEY_DOWN_ARROW) {
+        keyHeld_reverse = true;
+    }
+    if (evt.keyCode == KEY_UP_ARROW) {
+        keyHeld_gas = true;
+    }
+}
+
+function keyReleased(evt) {
+    if (evt.keyCode == KEY_LEFT_ARROW) {
+        keyHeld_TurnLeft = false;
+    } 
+    if (evt.keyCode == KEY_RIGHT_ARROW) {
+        keyHeld_TurnRight = false;
+    } 
+     if (evt.keyCode == KEY_DOWN_ARROW) {
+        keyHeld_reverse = false;
+    }
+    if (evt.keyCode == KEY_UP_ARROW) {
+        keyHeld_gas = false;
+    }
+}

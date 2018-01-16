@@ -1,0 +1,9 @@
+body {
+    overflow: hidden;
+}
+#gameCanvas {
+    margin: 0 auto;
+    display: block;
+    transform: translateY(-50%);
+    margin-top: 50vh;
+}

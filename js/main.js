@@ -1,5 +1,8 @@
 var canvas, canvasContext;
 
+var redShip = new shipClass();
+var greenShip = new shipClass();
+
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
@@ -16,7 +19,8 @@ function startGame() {
 	setInterval(updateAll, 1000/framesPerSecond);
     
     SetupInput();
-	shipReset();
+    greenShip.reset(greenShipPic);
+	redShip.reset(shipPic);
 }
 
 function updateAll() {
@@ -25,8 +29,8 @@ function updateAll() {
 }
 
 function moveAll() {
-	shipMove();
-	shipTrackHandling();
+    greenShip.move();
+	redShip.move();
 }
 
 function clearScreen() {
@@ -36,5 +40,6 @@ function clearScreen() {
 function drawAll() {
 	clearScreen();
 	drawTracks();
-    shipDraw();
+    greenShip.draw();
+    redShip.draw();
 }

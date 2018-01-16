@@ -3,10 +3,11 @@ const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 
-var keyHeld_gas = false;
-var keyHeld_reverse = false;
-var keyHeld_TurnLeft = false;
-var keyHeld_TurnRight = false;
+const KEY_W = 87;
+const KEY_A = 65;
+const KEY_S = 83;
+const KEY_D = 68;
+
 
 var mouseX = 0;
 var mouseY = 0;
@@ -16,6 +17,10 @@ function SetupInput () {
     
     document.addEventListener('keydown',keyPressed);
     document.addEventListener('keyup',keyReleased);
+    
+    greenShip.setupInput(KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW);
+    redShip.setupInput(KEY_W, KEY_D, KEY_S, KEY_A);
+    
 }
 
 function updateMousePos(evt) {
@@ -32,32 +37,28 @@ function updateMousePos(evt) {
 	shipSpeedY = -4;*/
 }
 
-function keyPressed(evt) {
-    if (evt.keyCode == KEY_LEFT_ARROW) {
-        keyHeld_TurnLeft = true;
+function keySet(keyEvent, whichCar, setTo) {
+    if (keyEvent.keyCode == whichCar.controlKeyLeft) {
+        whichCar.keyHeld_TurnLeft = setTo;
     } 
-    if (evt.keyCode == KEY_RIGHT_ARROW) {
-        keyHeld_TurnRight = true;
+    if (keyEvent.keyCode == whichCar.controlKeyRight) {
+        whichCar.keyHeld_TurnRight = setTo;
     } 
-    if (evt.keyCode == KEY_DOWN_ARROW) {
-        keyHeld_reverse = true;
+    if (keyEvent.keyCode == whichCar.controlKeyDown) {
+        whichCar.keyHeld_reverse = setTo;
     }
-    if (evt.keyCode == KEY_UP_ARROW) {
-        keyHeld_gas = true;
+    if (keyEvent.keyCode == whichCar.controlKeyUp) {
+        whichCar.keyHeld_gas = setTo;
     }
 }
 
+function keyPressed(evt) {
+    //console.log("key pressed: "+evt.keyCode);
+    keySet(evt,greenShip, true);
+    keySet(evt,redShip, true);
+}
+
 function keyReleased(evt) {
-    if (evt.keyCode == KEY_LEFT_ARROW) {
-        keyHeld_TurnLeft = false;
-    } 
-    if (evt.keyCode == KEY_RIGHT_ARROW) {
-        keyHeld_TurnRight = false;
-    } 
-     if (evt.keyCode == KEY_DOWN_ARROW) {
-        keyHeld_reverse = false;
-    }
-    if (evt.keyCode == KEY_UP_ARROW) {
-        keyHeld_gas = false;
-    }
+    keySet(evt,greenShip, false);
+    keySet(evt,redShip, false);
 }

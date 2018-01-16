@@ -19,8 +19,14 @@ function startGame() {
 	setInterval(updateAll, 1000/framesPerSecond);
     
     SetupInput();
-    greenShip.reset(greenShipPic);
-	redShip.reset(shipPic);
+    
+    loadLevel(levelOne);
+}
+
+function loadLevel(whichLevel,){
+    worldGrid = whichLevel.slice();
+    greenShip.reset(greenShipPic,"Green Sapphire");
+	redShip.reset(shipPic,"Ruby");
 }
 
 function updateAll() {
@@ -39,7 +45,7 @@ function clearScreen() {
 
 function drawAll() {
 	clearScreen();
-	drawTracks();
+	drawWorld();
     greenShip.draw();
     redShip.draw();
 }

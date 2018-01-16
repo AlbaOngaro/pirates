@@ -29,10 +29,28 @@ function loadImages(){
         {varName: shipPic, theFile: "Ships/ship (3).png"},
         {varName: greenShipPic, theFile: "Ships/ship (4).png"},
         
-        {tileType: MAP_SEA, theFile: "Tiles/tile_73.png"},
-        {tileType: MAP_LANDS, theFile: "Tiles/tile_68.png"},
-        {tileType: MAP_PALM, theFile: "Tiles/tile_97.png"},
-        {tileType: MAP_ENEMY, theFile: "Tiles/tile_98.png"},
+        
+        {tileType: MAP_SEA, theFile: "Tiles/sea.png"},
+        
+        {tileType: SAND_BOTTOM, theFile: "Tiles/sand_bottom.png"},
+        {tileType: SAND_LEFT, theFile: "Tiles/sand_left.png"},
+        {tileType: SAND_TOP, theFile: "Tiles/sand_top.png"},
+        {tileType: SAND_RIGHT, theFile: "Tiles/sand_right.png"},
+        
+        {tileType: SAND_TOP_LEFT, theFile: "Tiles/sand_top_left.png"},
+        {tileType: SAND_TOP_RIGHT, theFile: "Tiles/sand_top_right.png"},
+        {tileType: SAND_BOTTOM_LEFT, theFile: "Tiles/sand_bottom_left.png"},
+        {tileType: SAND_BOTTOM_RIGHT, theFile: "Tiles/sand_bottom_right.png"},
+        
+        {tileType: SAND_CENTER, theFile: "Tiles/sand_center.png"},
+        
+        {tileType: SAND_ANGLE_TOP_LEFT, theFile: "Tiles/angle_top_left.png"},
+        {tileType: SAND_ANGLE_TOP_RIGHT, theFile: "Tiles/angle_top_right.png"},
+        {tileType: SAND_ANGLE_BOTTOM_LEFT, theFile: "Tiles/angle_bottom_left.png"},
+        {tileType: SAND_ANGLE_BOTTOM_RIGHT, theFile: "Tiles/angle_bottom_right.png"},
+        
+        {tileType: PALM, theFile: "Tiles/palm.png"},
+        
     ];
     
     picsToLoad = imageList.length;

@@ -20,6 +20,11 @@ a {
 a:hover {
     color: #3c696a;
 }
+p {
+    margin: 30px auto 0 auto;
+    display: block;
+    width: 800px;
+}
 #gameCanvas {
     margin: 0 auto;
     display: block;

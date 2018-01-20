@@ -1,23 +1,24 @@
-var camPanX = 0.0;
-var camPanY = 0.0;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X = 150;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y = 100;
+
+var camPanX = 0.0;
+var camPanY = 0.0;
 
 function sliderMove() {
     var nextX = sliderX;
     var nextY = sliderY;
 
-    if(redShip.x < sliderX) {
-      nextX += -redShip.speed;
+    if(p1.x < sliderX) {
+      nextX += -p1.speed;
     }
-    if(redShip.x > sliderX) {
-      nextX += redShip.speed;
+    if(p1.x > sliderX) {
+      nextX += p1.speed;
     }
-    if(redShip.y < sliderY) {
-      nextY += -redShip.speed;
+    if(p1.y < sliderY) {
+      nextY += -p1.speed;
     }
-    if(redShip.y > sliderY) {
-      nextY += redShip.speed;
+    if(p1.y > sliderY) {
+      nextY += p1.speed;
     }
 
     if(isBrickAtPixelCoord(nextX,nextY) == false) {
@@ -41,19 +42,18 @@ function cameraFollow() {
 
     if(playerDistFromCameraFocusX > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X) {
       if(cameraFocusCenterX < sliderX)  {
-        camPanX += redShip.speed;
+        camPanX += Math.cos(p1.ang) * p1.speed;
       } else {
-        camPanX -= redShip.speed;
+        camPanX += Math.cos(p1.ang) * p1.speed;
       }
     }
     if(playerDistFromCameraFocusY > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y) {
       if(cameraFocusCenterY < sliderY)  {
-        camPanY += redShip.speed;
+        camPanY += Math.sin(p1.ang) * p1.speed;
       } else {
-        camPanY -= redShip.speed;
+        camPanY += Math.sin(p1.ang) * p1.speed;
       }
     }
-
     // this next code blocks the game from showing out of bounds
     // (this isn't required, if you don't mind seeing beyond edges)
     if(camPanX < 0) {

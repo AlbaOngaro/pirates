@@ -1,6 +1,7 @@
 const GROUNDSPEED_DECAY_MULT = 0.98;
 const DRIVE_POWER = 0.04;
 const REVERSE_POWER = 0.025;
+const ATTACK_RANGE = 50;
 var isShooting = false;
 
 function shipClass() {
@@ -10,8 +11,9 @@ function shipClass() {
     this.ang = 0;
     this.speed = 0;
     this.turn_rate = 0.02;
-    this.myCarPic;
+    this.myShipPic;
     this.name ="Untitled car";
+
     
     this.myShot = new shotClass();
     
@@ -33,10 +35,22 @@ function shipClass() {
         this.controlKeyFire = shotKey;
     }
     
-    this.reset = function(whichImage, shipName) {
+    this.reset = function(whichImage, shipName, playerTeam) {
+        
+        this.playerControlled = playerTeam;
+        
+        if (this.playerControlled) {
+            this.x = camPanX + canvas.width/2;
+            this.y = camPanY + canvas.height/2;
+        } else {
+            this.x = canvas.width/4;
+            this.y = canvas.height/4;
+        }
+        
+        
         
         this.name = shipName;
-        this.myCarPic = whichImage;
+        this.myShipPic = whichImage;
         this.speed = 0;
         
         for(var eachRow=0;eachRow<MAP_ROWS;eachRow++) {
@@ -59,7 +73,7 @@ function shipClass() {
         }////
     } ////
     
-    this.move = function() {
+    this.move = function(target) {
         
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
@@ -68,18 +82,27 @@ function shipClass() {
         } else {
             this.turn_rate = 0.025;
         }
-
-        if (this.keyHeld_TurnLeft) {
-            this.ang -= this.turn_rate;
-        }
-        if (this.keyHeld_TurnRight) {
-            this.ang += this.turn_rate;
-        }
-        if (this.keyHeld_reverse) {
-            this.speed -= REVERSE_POWER;
-        }
-        if (this.keyHeld_gas) {
-            this.speed += DRIVE_POWER;
+        
+        //player movement logic
+        if (this.playerControlled == true) {
+            if (this.keyHeld_TurnLeft) {
+                this.ang -= this.turn_rate;
+            }
+            if (this.keyHeld_TurnRight) {
+                this.ang += this.turn_rate;
+            }
+            if (this.keyHeld_reverse) {
+                this.speed -= REVERSE_POWER;
+            }
+            if (this.keyHeld_gas) {
+                this.speed += DRIVE_POWER;
+            } 
+        } 
+        
+        //enemy movment logic
+        if (this.playerControlled == false) {
+            this.ang = Math.atan2(target.y-this.y,target.x-this.x);
+            this.speed += DRIVE_POWER/2;
         }
         
         this.x += Math.cos(this.ang) * this.speed;
@@ -89,10 +112,11 @@ function shipClass() {
         shipWorldHandling(this);
         
         this.myShot.move();
+        
     }
     
     this.draw = function() {
-        drawBitmapCenteredWithRotation(this.myCarPic,this.x,this.y,this.ang);
+        drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang);
         this.myShot.draw();
     }
     

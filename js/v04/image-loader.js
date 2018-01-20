@@ -1,6 +1,7 @@
 var tilePics = [];
 
-var shipPic = document.createElement('img');
+var redShipPic = document.createElement('img');
+var greenShipPic = document.createElement('img')
 var shotPic = document.createElement('img');
 
 var picsToLoad = 0;
@@ -14,7 +15,7 @@ function countLoadedImages(){
 
 function beginLoadingImages(imgVar, fileName){
     imgVar.onload = countLoadedImages;
-    imgVar.src = "assets/images/v03/"+fileName;
+    imgVar.src = "assets/images/v04/"+fileName;
 }
 
 function loadMapTiles(tileCode, fileName) {
@@ -25,7 +26,8 @@ function loadMapTiles(tileCode, fileName) {
 function loadImages(){
     
     var imageList = [
-        {varName: shipPic, theFile: "Ships/ship (3).png"},
+        {varName: redShipPic, theFile: "Ships/ship (3).png"},
+        {varName: greenShipPic, theFile: "Ships/ship (4).png"},
         {varName: shotPic, theFile: "Parts/cannonBall.png"},
         
         

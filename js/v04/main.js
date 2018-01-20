@@ -1,6 +1,7 @@
 var canvas, canvasContext;
 
 var p1 = new shipClass();
+var enemy = new shipClass();
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -22,7 +23,8 @@ function startGame() {
 
 function loadLevel(whichLevel){
     worldGrid = whichLevel.slice();
-	p1.reset(shipPic,"Ruby");
+	p1.reset(redShipPic,"Ruby",true);
+    enemy.reset(greenShipPic,"Emerald",false);
     p1.myShot.reset();
 }
 
@@ -33,6 +35,7 @@ function updateAll() {
 
 function moveAll() {
 	p1.move();
+    enemy.move(p1);
     sliderMove();
     cameraFollow();
 }
@@ -47,5 +50,7 @@ function drawAll() {
     canvasContext.translate(-camPanX,-camPanY);
 	drawWorld();
     p1.draw();
+    enemy.draw();
+    //colorCircle(p1.x,p1.y,ATTACK_RANGE,'white');
     canvasContext.restore();
 }

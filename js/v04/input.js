@@ -2,6 +2,8 @@ const KEY_W = 87;
 const KEY_A = 65;
 const KEY_S = 83;
 const KEY_D = 68;
+const KEY_LEFT_ARROW = 37;
+const KEY_RIGHT_ARROW = 39;
 const KEY_SPACEBAR = 32;
 
 var mouseX = 0;
@@ -42,9 +44,20 @@ function keySet(keyEvent, whichCar, setTo) {
 
 function keyPressed(evt) {
     
+    console.log(evt.keyCode);
+    
+    if (evt.keyCode == KEY_LEFT_ARROW) {
+        shotSide = "left";
+        document.getElementById('shotSide').innerHTML = "Shot side is "+shotSide; 
+    }
+    if (evt.keyCode == KEY_RIGHT_ARROW) {
+        shotSide = "right";
+        document.getElementById('shotSide').innerHTML = "Shot side is "+shotSide; 
+    }
     if (evt.keyCode == p1.controlKeyFire) {
         p1.cannonFire();
     }
+    
     
     keySet(evt,p1, true);
     evt.preventDefault();

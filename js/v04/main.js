@@ -26,11 +26,16 @@ function loadLevel(whichLevel){
 	p1.reset(redShipPic,"Ruby",true);
     enemy.reset(greenShipPic,"Emerald",false);
     p1.myShot.reset();
+    enemy.enemyShot.reset();
 }
 
 function updateAll() {
 	moveAll();
 	drawAll();
+    if (enemy.attack) {
+        enemy.enemyShot.shotSide = "front";
+        enemy.cannonFire();
+    }
 }
 
 function moveAll() {

@@ -14,8 +14,11 @@ function shipClass() {
     this.myShipPic;
     this.name ="Untitled car";
 
+    this.attackAreaRadius = 100;
+    this.damageAreaColor = 'rgba( 255, 87, 51 ,0.5)';
     
     this.myShot = new shotClass();
+    this.enemyShot = new shotClass();
     
     this.keyHeld_gas = false;
     this.keyHeld_reverse = false;
@@ -43,11 +46,9 @@ function shipClass() {
             this.x = camPanX + canvas.width/2;
             this.y = camPanY + canvas.height/2;
         } else {
-            this.x = canvas.width/4;
+            this.x = canvas.width;
             this.y = canvas.height/4;
         }
-        
-        
         
         this.name = shipName;
         this.myShipPic = whichImage;
@@ -67,10 +68,13 @@ function shipClass() {
         }
     }
     
-    this.cannonFire = function() { ////
+    this.cannonFire = function() { ////   
         if (this.myShot.isReadyToFire()) {
             this.myShot.shootFrom(this);
         }////
+        if (this.enemyShot.isReadyToFire()){
+            this.enemyShot.shootFrom(this);
+        }
     } ////
     
     this.move = function(target) {
@@ -102,7 +106,21 @@ function shipClass() {
         //enemy movment logic
         if (this.playerControlled == false) {
             this.ang = Math.atan2(target.y-this.y,target.x-this.x);
-            this.speed += DRIVE_POWER/2;
+            
+            //console.log(this.ang);
+            
+            this.speed += DRIVE_POWER/2.5; 
+            if (target.x + target.attackAreaRadius > this.x &&
+                target.x - target.attackAreaRadius < this.x &&
+                target.y + target.attackAreaRadius > this.y &&
+                target.y - target.attackAreaRadius < this.y) {
+                this.speed = 0;
+                this.attack = true;
+            } else {
+                this.attack = false;
+            }
+            
+            //console.log(this.attack);
         }
         
         this.x += Math.cos(this.ang) * this.speed;
@@ -112,12 +130,14 @@ function shipClass() {
         shipWorldHandling(this);
         
         this.myShot.move();
+        this.enemyShot.move();
         
     }
     
     this.draw = function() {
         drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang);
         this.myShot.draw();
+        this.enemyShot.draw();
     }
     
 }

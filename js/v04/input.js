@@ -44,21 +44,17 @@ function keySet(keyEvent, whichCar, setTo) {
 
 function keyPressed(evt) {
     
-    console.log(evt.keyCode);
+    //console.log(evt.keyCode);
     
     if (evt.keyCode == KEY_LEFT_ARROW) {
-        shotSide = "left";
-        document.getElementById('shotSide').innerHTML = "Shot side is "+shotSide; 
+        p1.myShot.shotSide = "left";
     }
     if (evt.keyCode == KEY_RIGHT_ARROW) {
-        shotSide = "right";
-        document.getElementById('shotSide').innerHTML = "Shot side is "+shotSide; 
+        p1.myShot.shotSide = "right";
     }
     if (evt.keyCode == p1.controlKeyFire) {
         p1.cannonFire();
     }
-    
-    
     keySet(evt,p1, true);
     evt.preventDefault();
 }

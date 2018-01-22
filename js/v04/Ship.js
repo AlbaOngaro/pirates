@@ -141,7 +141,10 @@ function shipClass() {
             this.myShot.shotLife = 0;
             playerHit = true;
             frameIndex = 0;
-            enemy.life -= 5;
+            if (enemy.life > 0) {
+                enemy.life -= 5;
+            }
+            
             if (enemy.life <= 30) {
                 enemy.myShipPic = greenShipPicDam;
             }
@@ -158,7 +161,10 @@ function shipClass() {
             this.enemyShot.shotLife = 0;
             enemyHit = true;
             frameIndex = 0;
-            p1.life -= 5;  
+            if (p1.life > 0) {
+                p1.life -= 5; 
+            }
+             
             if (p1.life <= 30) {
                 p1.myShipPic = redShipPicDam;
             }

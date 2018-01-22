@@ -40,6 +40,7 @@ function updateAll() {
 
 function moveAll() {
 	p1.move();
+    //p1 is the target element, which makes the enemy move against it
     enemy.move(p1);
     sliderMove();
     cameraFollow();

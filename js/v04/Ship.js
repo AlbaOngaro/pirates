@@ -3,6 +3,8 @@ const DRIVE_POWER = 0.04;
 const REVERSE_POWER = 0.025;
 const ATTACK_RANGE = 50;
 var isShooting = false;
+var lastShotX;
+var lastShotY;
 
 function shipClass() {
     
@@ -14,8 +16,11 @@ function shipClass() {
     this.myShipPic;
     this.name ="Untitled car";
 
-    this.attackAreaRadius = 100;
-    this.damageAreaColor = 'rgba( 255, 87, 51 ,0.5)';
+    this.attackAreaRadius = 130;
+    this.damageAreaRadius = 25;
+    this.areaColor = 'rgba( 255, 87, 51 ,0.5)';
+    
+    this.life = 100;
     
     this.myShot = new shotClass();
     this.enemyShot = new shotClass();
@@ -70,13 +75,14 @@ function shipClass() {
     
     this.cannonFire = function() { ////   
         if (this.myShot.isReadyToFire()) {
-            this.myShot.shootFrom(this);
+            this.myShot.shootFrom(this,30);
         }////
         if (this.enemyShot.isReadyToFire()){
-            this.enemyShot.shootFrom(this);
+            this.enemyShot.shootFrom(this,50);
         }
     } ////
     
+    //the target argument is used only for the enemy player
     this.move = function(target) {
         
         this.speed *= GROUNDSPEED_DECAY_MULT;
@@ -105,11 +111,10 @@ function shipClass() {
         
         //enemy movment logic
         if (this.playerControlled == false) {
+            
             this.ang = Math.atan2(target.y-this.y,target.x-this.x);
-            
-            //console.log(this.ang);
-            
             this.speed += DRIVE_POWER/2.5; 
+            
             if (target.x + target.attackAreaRadius > this.x &&
                 target.x - target.attackAreaRadius < this.x &&
                 target.y + target.attackAreaRadius > this.y &&
@@ -119,8 +124,6 @@ function shipClass() {
             } else {
                 this.attack = false;
             }
-            
-            //console.log(this.attack);
         }
         
         this.x += Math.cos(this.ang) * this.speed;
@@ -129,6 +132,30 @@ function shipClass() {
         //ship collisions
         shipWorldHandling(this);
         
+        
+        if (enemy.x + enemy.damageAreaRadius > this.myShot.x &&
+            enemy.x - enemy.damageAreaRadius < this.myShot.x &&
+            enemy.y + enemy.damageAreaRadius > this.myShot.y &&
+            enemy.y - enemy.damageAreaRadius < this.myShot.y) 
+        {
+            this.myShot.shotLife = 0;
+            enemy.life -= 5;  
+        }
+        
+        
+        if (p1.x + p1.damageAreaRadius > this.enemyShot.x &&
+            p1.x - p1.damageAreaRadius < this.enemyShot.x &&
+            p1.y + p1.damageAreaRadius > this.enemyShot.y &&
+            p1.y - p1.damageAreaRadius < this.enemyShot.y) 
+        {
+            lastShotX = this.enemyShot.x;
+            lastShotY = this.enemyShot.y;
+            this.enemyShot.shotLife = 0;
+            p1.life -= 5;  
+            console.log(lastShotX);
+            console.log(lastShotY);
+        }
+        
         this.myShot.move();
         this.enemyShot.move();
         
@@ -136,6 +163,8 @@ function shipClass() {
     
     this.draw = function() {
         drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang);
+        //function used for debugging purpose, this is the damage area
+        //colorCircle(this.x,this.y,this.damageAreaRadius,this.areaColor);
         this.myShot.draw();
         this.enemyShot.draw();
     }

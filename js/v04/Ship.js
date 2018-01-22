@@ -164,6 +164,13 @@ function shipClass() {
             }
         }
         
+        if (this.life > 50) {
+            this.lifeColor = "rgba(51, 204, 51, 0.5)"
+        } else if (this.life <= 50 && this.life > 10) {
+            this.lifeColor = "rgba(255, 102, 0,0.5)";
+        } else {
+            this.lifeColor = "rgba(255, 0, 0, 0.5)";
+        }
         
         this.myShot.move();
         this.enemyShot.move();
@@ -172,6 +179,7 @@ function shipClass() {
     
     this.draw = function() {
         drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang);
+        colorRect(this.x-50,this.y-20,this.life,7,this.lifeColor);
         //function used for debugging purpose, this is the damage area
         //colorCircle(this.x,this.y,this.damageAreaRadius,this.areaColor);
         this.myShot.draw();

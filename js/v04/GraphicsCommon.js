@@ -22,13 +22,3 @@ function colorText(showWords, textX,textY, fillColor) {
 	canvasContext.fillStyle = fillColor;
 	canvasContext.fillText(showWords, textX, textY);
 }
-
-
-//spriteSheet,cropX,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
-
-function drawAnimatedSpriteSheet (spriteSheet,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH) {
-    
-    /// canvasContext.drawImage(explosionPic,spriteW*currFrame,cropY,spriteW,spriteH,spriteX,spriteY-spriteH/2,spriteW,spriteH);
-    
-    
-}

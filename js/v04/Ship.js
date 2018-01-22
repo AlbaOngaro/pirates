@@ -3,7 +3,6 @@ const DRIVE_POWER = 0.04;
 const REVERSE_POWER = 0.025;
 const ATTACK_RANGE = 50;
 var isShooting = false;
-var hit = false;
 
 function shipClass() {
     
@@ -16,7 +15,7 @@ function shipClass() {
     this.name ="Untitled car";
 
     this.attackAreaRadius = 130;
-    this.damageAreaRadius = 25;
+    this.damageAreaRadius = 15;
     this.areaColor = 'rgba( 255, 87, 51 ,0.5)';
     
     this.life = 100;
@@ -140,6 +139,8 @@ function shipClass() {
             this.myShot.lastShotX = this.myShot.x;
             this.myShot.lastShotY = this.myShot.y;
             this.myShot.shotLife = 0;
+            playerHit = true;
+            frameIndex = 0;
             enemy.life -= 5;
             if (enemy.life <= 30) {
                 enemy.myShipPic = greenShipPicDam;
@@ -155,11 +156,14 @@ function shipClass() {
             this.enemyShot.lastShotX = this.enemyShot.x;
             this.enemyShot.lastShotY = this.enemyShot.y;
             this.enemyShot.shotLife = 0;
+            enemyHit = true;
+            frameIndex = 0;
             p1.life -= 5;  
             if (p1.life <= 30) {
                 p1.myShipPic = redShipPicDam;
             }
         }
+        
         
         this.myShot.move();
         this.enemyShot.move();

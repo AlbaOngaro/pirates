@@ -1,4 +1,9 @@
 var canvas, canvasContext;
+var frameIndex = 0;
+var tickCount = 0;
+var ticksPerFrame = 1;
+var enemyHit = false;
+var playerHit = false;
 
 var p1 = new shipClass();
 var enemy = new shipClass();
@@ -56,7 +61,12 @@ function drawAll() {
 	drawWorld();
     p1.draw();
     enemy.draw();
-    /// spriteSheet,cropX,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
-    drawAnimatedSpriteSheet(explosionPic,0,0,50,canvas.width/2,canvas.height/2,50,50);
+    /// spriteSheet,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
+    if (enemyHit == true) {
+        drawExplosions(explosionPic,0,50,50,enemy.enemyShot.lastShotX,enemy.enemyShot.lastShotY,50,50); 
+    }  
+    if (playerHit == true) {
+        drawExplosions(explosionPic,0,50,50,p1.myShot.lastShotX,p1.myShot.lastShotY,50,50);
+    }
     canvasContext.restore();
 }

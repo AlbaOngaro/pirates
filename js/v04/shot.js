@@ -6,6 +6,8 @@ const SHOT_DISPLAY_RADIUS = 2.0;
 function shotClass() {
     
     this.shotSide = "right";
+    this.lastShotX;
+    this.lastShotY;
     
     this.reset = function() {
         this.shotLife = 0;

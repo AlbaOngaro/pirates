@@ -40,7 +40,7 @@ function updateAll() {
 
 function moveAll() {
 	p1.move();
-    //p1 is the target element, which makes the enemy move against it
+    /// p1 is the target element, which makes the enemy move against it
     enemy.move(p1);
     sliderMove();
     cameraFollow();
@@ -51,12 +51,12 @@ function clearScreen() {
 }
 
 function drawAll() {
-	clearScreen();
     canvasContext.save();
     canvasContext.translate(-camPanX,-camPanY);
 	drawWorld();
     p1.draw();
     enemy.draw();
-    //colorCircle(p1.x,p1.y,ATTACK_RANGE,'white');
+    /// spriteSheet,cropX,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
+    drawAnimatedSpriteSheet(explosionPic,0,0,50,canvas.width/2,canvas.height/2,50,50);
     canvasContext.restore();
 }

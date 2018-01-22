@@ -6,6 +6,8 @@ const SHOT_DISPLAY_RADIUS = 2.0;
 function shotClass() {
     
     this.shotSide = "right";
+    this.lastShotX;
+    this.lastShotY;
     
     this.reset = function() {
         this.shotLife = 0;
@@ -13,7 +15,7 @@ function shotClass() {
     this.isReadyToFire = function() {
         return (this.shotLife <= 0);
     }
-    this.shootFrom = function(shipFiring) {
+    this.shootFrom = function(shipFiring,shot_life) {
         this.x = shipFiring.x;
         this.y = shipFiring.y;
         
@@ -25,19 +27,19 @@ function shotClass() {
             this.yv = Math.sin(shipFiring.ang-1.5) * SHOT_SPEED;
         } else if (this.shotSide == "front") {
             this.xv = Math.cos(shipFiring.ang) * SHOT_SPEED;
-        this.yv = Math.sin(shipFiring.ang) * SHOT_SPEED;
+            this.yv = Math.sin(shipFiring.ang) * SHOT_SPEED;
         }
-        
-        
-        
-        this.shotLife = SHOT_LIFE;
+        this.shotLife = shot_life;
     }
     this.move = function() {
         if (this.shotLife > 0) {
             this.shotLife--;
             this.x += this.xv;
             this.y += this.yv;
-        }
+        } else {
+            this.x = undefined;
+            this.y = undefined;
+        }    
     }
 
     this.draw = function() {

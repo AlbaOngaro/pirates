@@ -1,4 +1,9 @@
 var canvas, canvasContext;
+var frameIndex = 0;
+var tickCount = 0;
+var ticksPerFrame = 1;
+var enemyHit = false;
+var playerHit = false;
 
 var p1 = new shipClass();
 var enemy = new shipClass();
@@ -40,6 +45,7 @@ function updateAll() {
 
 function moveAll() {
 	p1.move();
+    /// p1 is the target element, which makes the enemy move against it
     enemy.move(p1);
     sliderMove();
     cameraFollow();
@@ -50,12 +56,17 @@ function clearScreen() {
 }
 
 function drawAll() {
-	clearScreen();
     canvasContext.save();
     canvasContext.translate(-camPanX,-camPanY);
 	drawWorld();
     p1.draw();
     enemy.draw();
-    //colorCircle(p1.x,p1.y,ATTACK_RANGE,'white');
+    /// spriteSheet,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
+    if (enemyHit == true) {
+        drawExplosions(explosionPic,0,50,50,enemy.enemyShot.lastShotX,enemy.enemyShot.lastShotY,50,50); 
+    }  
+    if (playerHit == true) {
+        drawExplosions(explosionPic,0,50,50,p1.myShot.lastShotX,p1.myShot.lastShotY,50,50);
+    }
     canvasContext.restore();
 }

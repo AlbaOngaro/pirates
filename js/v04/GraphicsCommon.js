@@ -1,8 +1,8 @@
-function drawBitmapCenteredWithRotation (useBitmap,atX,atY,withAng) {
+function drawBitmapCenteredWithRotation (useBitmap,atX,atY,withAng,cropX) {
     canvasContext.save();
     canvasContext.translate(atX,atY);
     canvasContext.rotate(withAng);
-    canvasContext.drawImage(useBitmap,-useBitmap.width/2,-useBitmap.height/2);
+    canvasContext.drawImage(useBitmap,cropX,0,useBitmap.width/2,useBitmap.height,-useBitmap.width/4,-useBitmap.height/2,useBitmap.width/2,useBitmap.height);
     canvasContext.restore();
 }
 

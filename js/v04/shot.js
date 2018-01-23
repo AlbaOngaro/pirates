@@ -6,16 +6,20 @@ const SHOT_DISPLAY_RADIUS = 2.0;
 function shotClass() {
     
     this.shotSide = "right";
-    this.lastShotX;
-    this.lastShotY;
+    this.target;
     
-    this.reset = function() {
+    this.reset = function(side,target) {
         this.shotLife = 0;
+        this.shotSide = side;
+        this.target = target;
     }
+    
     this.isReadyToFire = function() {
         return (this.shotLife <= 0);
     }
-    this.shootFrom = function(shipFiring,shot_life) {
+    
+    this.shootFrom = function(shipFiring, shot_life) {
+        
         this.x = shipFiring.x;
         this.y = shipFiring.y;
         
@@ -29,8 +33,10 @@ function shotClass() {
             this.xv = Math.cos(shipFiring.ang) * SHOT_SPEED;
             this.yv = Math.sin(shipFiring.ang) * SHOT_SPEED;
         }
+        
         this.shotLife = shot_life;
     }
+    
     this.move = function() {
         if (this.shotLife > 0) {
             this.shotLife--;
@@ -39,7 +45,28 @@ function shotClass() {
         } else {
             this.x = undefined;
             this.y = undefined;
-        }    
+        } 
+        
+        if (this.target.x + this.target.damageAreaRadius > this.x &&
+            this.target.x - this.target.damageAreaRadius < this.x &&
+            this.target.y + this.target.damageAreaRadius > this.y &&
+            this.target.y - this.target.damageAreaRadius < this.y) {
+            
+            lastShotX = this.x;
+            lastShotY = this.y;
+            
+            this.shotLife = 0;
+
+            hit = true;
+            frameIndex = 0;
+            if (this.target.life > 0) {
+                this.target.life -= 5;
+            } 
+            
+            if (this.target.life <= 30) {
+                this.target.cropX = 50;
+            }
+        }
     }
 
     this.draw = function() {

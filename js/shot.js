@@ -22,17 +22,14 @@ function shotClass() {
         
         this.x = shipFiring.x;
         this.y = shipFiring.y;
-        
-        if (this.shotSide == "right") {
-            this.xv = Math.cos(shipFiring.ang+1.5) * SHOT_SPEED;
-            this.yv = Math.sin(shipFiring.ang+1.5) * SHOT_SPEED;
-        } else if (this.shotSide == "left") {
-            this.xv = Math.cos(shipFiring.ang-1.5) * SHOT_SPEED;
-            this.yv = Math.sin(shipFiring.ang-1.5) * SHOT_SPEED;
-        } else if (this.shotSide == "front") {
+        if (shipFiring.playerControlled) {
+            this.xv = Math.cos(circle.angle) * SHOT_SPEED;
+            this.yv = Math.sin(circle.angle) * SHOT_SPEED;
+        } else {
             this.xv = Math.cos(shipFiring.ang) * SHOT_SPEED;
             this.yv = Math.sin(shipFiring.ang) * SHOT_SPEED;
         }
+        
         
         this.shotLife = shot_life;
     }
@@ -46,7 +43,6 @@ function shotClass() {
             this.x = undefined;
             this.y = undefined;
         } 
-        
         if (this.target.x + this.target.damageAreaRadius > this.x &&
             this.target.x - this.target.damageAreaRadius < this.x &&
             this.target.y + this.target.damageAreaRadius > this.y &&

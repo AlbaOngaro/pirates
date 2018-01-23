@@ -15,7 +15,7 @@ function SetupInput () {
     document.addEventListener('keydown',keyPressed);
     document.addEventListener('keyup',keyReleased);
 
-    p1.setupInput(KEY_W, KEY_D, KEY_S, KEY_A, KEY_SPACEBAR);
+    p1.setupInput(KEY_W, KEY_D, KEY_S, KEY_A, KEY_SPACEBAR, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
 }
 
 function updateMousePos(evt) {
@@ -27,18 +27,24 @@ function updateMousePos(evt) {
 
 }
 
-function keySet(keyEvent, whichCar, setTo) {
-    if (keyEvent.keyCode == whichCar.controlKeyLeft) {
-        whichCar.keyHeld_TurnLeft = setTo;
+function keySet(keyEvent, whichShip, setTo) {
+    if (keyEvent.keyCode == whichShip.controlKeyLeft) {
+        whichShip.keyHeld_TurnLeft = setTo;
     } 
-    if (keyEvent.keyCode == whichCar.controlKeyRight) {
-        whichCar.keyHeld_TurnRight = setTo;
+    if (keyEvent.keyCode == whichShip.controlKeyRight) {
+        whichShip.keyHeld_TurnRight = setTo;
     } 
-    if (keyEvent.keyCode == whichCar.controlKeyDown) {
-        whichCar.keyHeld_reverse = setTo;
+    if (keyEvent.keyCode == whichShip.controlKeyDown) {
+        whichShip.keyHeld_reverse = setTo;
     }
-    if (keyEvent.keyCode == whichCar.controlKeyUp) {
-        whichCar.keyHeld_gas = setTo;
+    if (keyEvent.keyCode == whichShip.controlKeyUp) {
+        whichShip.keyHeld_gas = setTo;
+    }
+    if (keyEvent.keyCode == whichShip.aimKeyLeft) {
+        whichShip.keyHeld_AimLeft = setTo;
+    }
+    if (keyEvent.keyCode == whichShip.aimKeyRight) {
+        whichShip.keyHeld_AimRight = setTo;
     }
 }
 
@@ -46,19 +52,19 @@ function keyPressed(evt) {
     
     //console.log(evt.keyCode);
     
-    if (evt.keyCode == KEY_LEFT_ARROW) {
+   /* if (evt.keyCode == KEY_LEFT_ARROW) {
         p1.myShot.shotSide = "left";
     }
     if (evt.keyCode == KEY_RIGHT_ARROW) {
         p1.myShot.shotSide = "right";
-    }
+    }*/
     if (evt.keyCode == p1.controlKeyFire) {
         p1.cannonFire();
     }
-    keySet(evt,p1, true);
+    keySet(evt, p1, true);
     evt.preventDefault();
 }
 
 function keyReleased(evt) {
-    keySet(evt,p1, false);
+    keySet(evt, p1, false);
 }

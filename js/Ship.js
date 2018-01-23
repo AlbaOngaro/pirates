@@ -3,6 +3,8 @@ const DRIVE_POWER = 0.04;
 const REVERSE_POWER = 0.025;
 const ATTACK_RANGE = 50;
 var isShooting = false;
+var circle = {radius:30, angle:0};
+var ball = {x:0, y:0,speed:0};
 
 function shipClass() {
     
@@ -23,23 +25,33 @@ function shipClass() {
     this.fullLife = 60;
     
     this.myShot = new shotClass();
+    this.aimDir = 0;
     
     this.keyHeld_gas = false;
     this.keyHeld_reverse = false;
     this.keyHeld_TurnLeft = false;
     this.keyHeld_TurnRight = false;
     
+    this.keyHeld_AimRight = false;
+    this.keyHeld_AimLeft = false;
+    
     this.controlKeyUp;
     this.controlKeyRight;
     this.controlKeyDown;
     this.controlKeyLeft;
+    this.aimKeyLeft;
+    this.aimKeyRight;
     
-    this.setupInput = function(upKey,rightKey,downKey,leftKey,shotKey) {
+    this.setupInput = function(upKey,rightKey,downKey,leftKey,shotKey,aimLeftKey,aimRightKey) {
         this.controlKeyUp = upKey;
         this.controlKeyRight = rightKey;
         this.controlKeyDown = downKey;
         this.controlKeyLeft = leftKey;
+        
         this.controlKeyFire = shotKey;
+    
+        this.aimKeyLeft = aimLeftKey;
+        this.aimKeyRight = aimRightKey;
     }
     
     this.reset = function(whichImage, shipName, playerTeam) {
@@ -95,7 +107,15 @@ function shipClass() {
             }
             if (this.keyHeld_gas) {
                 this.speed += DRIVE_POWER;
-            } 
+            }
+            
+            if (this.keyHeld_AimLeft) {
+                ball.speed = -0.1;
+            } else if (this.keyHeld_AimRight) {
+                ball.speed = 0.1;
+            } else {
+                ball.speed = 0;
+            }
         } 
         
         //enemy movment logic
@@ -140,9 +160,25 @@ function shipClass() {
         strokeRect(this.x-(this.fullLife/2),this.y-30,this.fullLife,9,'white',2);
     }
     
+    this.drawAimDirection = function(){
+        ball.x = this.x + Math.cos(circle.angle) * circle.radius;
+        ball.y = this.y + Math.sin(circle.angle) * circle.radius;
+        
+        circle.angle += ball.speed;
+        
+        canvasContext.fillStyle = "#000000";
+        canvasContext.beginPath();
+        canvasContext.arc(ball.x,ball.y,4,0,Math.PI*2,true);
+        canvasContext.closePath();
+        canvasContext.fill();
+    }
     this.draw = function() {
-        drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang,this.cropX);
+        drawBitmapCroppedWithRotation(this.myShipPic,this.x,this.y,this.ang,this.cropX);
         this.drawLife();
+        if (this.playerControlled) {
+            this.drawAimDirection();
+        }
+        //this.drawAimDirection();
         //function used for debugging purpose, this is the damage area
         //colorCircle(this.x,this.y,this.damageAreaRadius,this.areaColor);
         this.myShot.draw();

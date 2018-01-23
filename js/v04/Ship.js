@@ -19,6 +19,7 @@ function shipClass() {
     this.areaColor = 'rgba( 255, 87, 51 ,0.5)';
     
     this.life = 100;
+    this.fullLife = 60;
     
     this.myShot = new shotClass();
     this.enemyShot = new shotClass();
@@ -45,19 +46,20 @@ function shipClass() {
         
         this.playerControlled = playerTeam;
         
+        /// position player & enemy
         if (this.playerControlled) {
             this.x = camPanX + canvas.width/2;
             this.y = camPanY + canvas.height/2;
         } else {
-            this.x = canvas.width;
-            this.y = canvas.height/4;
+            this.x = Math.floor((Math.random() * (MAP_COLS*TILE_W-TILE_W)) + TILE_W);
+            this.y = Math.floor((Math.random() * (MAP_ROWS*TILE_H-TILE_H)) + TILE_H);
         }
         
         this.name = shipName;
         this.myShipPic = whichImage;
         this.speed = 0;
         
-        for(var eachRow=0;eachRow<MAP_ROWS;eachRow++) {
+        /*for(var eachRow=0;eachRow<MAP_ROWS;eachRow++) {
             for(var eachCol=0;eachCol<MAP_COLS;eachCol++) {
                 var arrayIndex = rowColToArrayIndex(eachCol, eachRow); 
                 if(worldGrid[arrayIndex] == MAP_PLAYER_START) {
@@ -68,7 +70,7 @@ function shipClass() {
                     return;
                 }
             }
-        }
+        }*/
     }
     
     this.cannonFire = function() { ////   
@@ -141,7 +143,10 @@ function shipClass() {
             this.myShot.shotLife = 0;
             playerHit = true;
             frameIndex = 0;
-            enemy.life -= 5;
+            if (enemy.life > 0) {
+                enemy.life -= 5;
+            }
+            
             if (enemy.life <= 30) {
                 enemy.myShipPic = greenShipPicDam;
             }
@@ -158,12 +163,22 @@ function shipClass() {
             this.enemyShot.shotLife = 0;
             enemyHit = true;
             frameIndex = 0;
-            p1.life -= 5;  
+            if (p1.life > 0) {
+                p1.life -= 5; 
+            }
+             
             if (p1.life <= 30) {
                 p1.myShipPic = redShipPicDam;
             }
         }
         
+        if (this.life > 50) {
+            this.lifeColor = "rgba(51, 204, 51, 0.7)"
+        } else if (this.life <= 50 && this.life > 10) {
+            this.lifeColor = "rgba(255, 102, 0,0.7)";
+        } else if (this.life < 10) {
+            this.lifeColor = "rgba(255, 0, 0, 0.7)";
+        }
         
         this.myShot.move();
         this.enemyShot.move();
@@ -172,6 +187,9 @@ function shipClass() {
     
     this.draw = function() {
         drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang);
+        colorRect(this.x-(this.fullLife/2),this.y-30,this.fullLife,9,'#d1d1d1');
+        colorRect(this.x-(this.fullLife/2),this.y-30,this.fullLife*(this.life/100),7,this.lifeColor);
+        strokeRect(this.x-(this.fullLife/2),this.y-30,this.fullLife,9,'white',2);
         //function used for debugging purpose, this is the damage area
         //colorCircle(this.x,this.y,this.damageAreaRadius,this.areaColor);
         this.myShot.draw();

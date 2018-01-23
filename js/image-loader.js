@@ -16,7 +16,7 @@ function countLoadedImages(){
 
 function beginLoadingImages(imgVar, fileName){
     imgVar.onload = countLoadedImages;
-    imgVar.src = "assets/images/v04/"+fileName;
+    imgVar.src = "assets/images/"+fileName;
 }
 
 function loadMapTiles(tileCode, fileName) {

@@ -11,6 +11,12 @@ function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
 	canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
 }
 
+function strokeRect(topLeftX,topLeftY, boxWidth,boxHeight, strokeColor,strokeWidth) {
+    canvasContext.strokeStyle = strokeColor;
+    canvasContext.lineWidth = strokeWidth;
+    canvasContext.strokeRect(topLeftX,topLeftY, boxWidth,boxHeight);
+}
+
 function colorCircle(centerX,centerY, radius, fillColor) {
 	canvasContext.fillStyle = fillColor;
 	canvasContext.beginPath();

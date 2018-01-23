@@ -32,6 +32,7 @@ function loadLevel(whichLevel){
     enemy.reset(greenShipPic,"Emerald",false);
     p1.myShot.reset();
     enemy.enemyShot.reset();
+    console.log(enemy.x);
 }
 
 function updateAll() {

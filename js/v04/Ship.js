@@ -8,6 +8,7 @@ function shipClass() {
     
     this.x = 75;
     this.y = 75;
+    this.cropX = 0;
     this.ang = 0;
     this.speed = 0;
     this.turn_rate = 0.02;
@@ -22,7 +23,6 @@ function shipClass() {
     this.fullLife = 60;
     
     this.myShot = new shotClass();
-    this.enemyShot = new shotClass();
     
     this.keyHeld_gas = false;
     this.keyHeld_reverse = false;
@@ -47,6 +47,8 @@ function shipClass() {
         this.playerControlled = playerTeam;
         
         /// position player & enemy
+        /// the player is positioned at the center of the canvas
+        /// the enemy is randomly positioned
         if (this.playerControlled) {
             this.x = camPanX + canvas.width/2;
             this.y = camPanY + canvas.height/2;
@@ -59,34 +61,21 @@ function shipClass() {
         this.myShipPic = whichImage;
         this.speed = 0;
         
-        /*for(var eachRow=0;eachRow<MAP_ROWS;eachRow++) {
-            for(var eachCol=0;eachCol<MAP_COLS;eachCol++) {
-                var arrayIndex = rowColToArrayIndex(eachCol, eachRow); 
-                if(worldGrid[arrayIndex] == MAP_PLAYER_START) {
-                    worldGrid[arrayIndex] = MAP_SEA;
-                    this.ang = -Math.PI/2;
-                    this.x = eachCol * TILE_W + TILE_W/2;
-                    this.y = eachRow * TILE_H + TILE_H/2;
-                    return;
-                }
-            }
-        }*/
     }
     
     this.cannonFire = function() { ////   
         if (this.myShot.isReadyToFire()) {
             this.myShot.shootFrom(this,30);
         }////
-        if (this.enemyShot.isReadyToFire()){
-            this.enemyShot.shootFrom(this,50);
-        }
     } ////
     
-    //the target argument is used only for the enemy player
+    /// the target argument is used only for the enemy player
     this.move = function(target) {
         
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
+        //console.log(this.x);
+        
         if (this.speed < 0.2) {
             this.turn_rate = 0.015;
         } else {
@@ -120,7 +109,7 @@ function shipClass() {
                 target.y + target.attackAreaRadius > this.y &&
                 target.y - target.attackAreaRadius < this.y) {
                 this.speed = 0;
-                this.attack = true;
+                this.cannonFire();
             } else {
                 this.attack = false;
             }
@@ -133,45 +122,6 @@ function shipClass() {
         shipWorldHandling(this);
         
         
-        if (enemy.x + enemy.damageAreaRadius > this.myShot.x &&
-            enemy.x - enemy.damageAreaRadius < this.myShot.x &&
-            enemy.y + enemy.damageAreaRadius > this.myShot.y &&
-            enemy.y - enemy.damageAreaRadius < this.myShot.y) 
-        {
-            this.myShot.lastShotX = this.myShot.x;
-            this.myShot.lastShotY = this.myShot.y;
-            this.myShot.shotLife = 0;
-            playerHit = true;
-            frameIndex = 0;
-            if (enemy.life > 0) {
-                enemy.life -= 5;
-            }
-            
-            if (enemy.life <= 30) {
-                enemy.myShipPic = greenShipPicDam;
-            }
-        }
-        
-        
-        if (p1.x + p1.damageAreaRadius > this.enemyShot.x &&
-            p1.x - p1.damageAreaRadius < this.enemyShot.x &&
-            p1.y + p1.damageAreaRadius > this.enemyShot.y &&
-            p1.y - p1.damageAreaRadius < this.enemyShot.y) 
-        {
-            this.enemyShot.lastShotX = this.enemyShot.x;
-            this.enemyShot.lastShotY = this.enemyShot.y;
-            this.enemyShot.shotLife = 0;
-            enemyHit = true;
-            frameIndex = 0;
-            if (p1.life > 0) {
-                p1.life -= 5; 
-            }
-             
-            if (p1.life <= 30) {
-                p1.myShipPic = redShipPicDam;
-            }
-        }
-        
         if (this.life > 50) {
             this.lifeColor = "rgba(51, 204, 51, 0.7)"
         } else if (this.life <= 50 && this.life > 10) {
@@ -181,19 +131,21 @@ function shipClass() {
         }
         
         this.myShot.move();
-        this.enemyShot.move();
         
     }
     
-    this.draw = function() {
-        drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang);
+    this.drawLife = function(){
         colorRect(this.x-(this.fullLife/2),this.y-30,this.fullLife,9,'#d1d1d1');
         colorRect(this.x-(this.fullLife/2),this.y-30,this.fullLife*(this.life/100),7,this.lifeColor);
         strokeRect(this.x-(this.fullLife/2),this.y-30,this.fullLife,9,'white',2);
+    }
+    
+    this.draw = function() {
+        drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang,this.cropX);
+        this.drawLife();
         //function used for debugging purpose, this is the damage area
         //colorCircle(this.x,this.y,this.damageAreaRadius,this.areaColor);
         this.myShot.draw();
-        this.enemyShot.draw();
     }
     
 }

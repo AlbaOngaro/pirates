@@ -2,8 +2,9 @@ var canvas, canvasContext;
 var frameIndex = 0;
 var tickCount = 0;
 var ticksPerFrame = 1;
-var enemyHit = false;
-var playerHit = false;
+var hit = false;
+var lastShotX;
+var lastShotY;
 
 var p1 = new shipClass();
 var enemy = new shipClass();
@@ -30,16 +31,14 @@ function loadLevel(whichLevel){
     worldGrid = whichLevel.slice();
 	p1.reset(redShipPic,"Ruby",true);
     enemy.reset(greenShipPic,"Emerald",false);
-    p1.myShot.reset();
-    enemy.enemyShot.reset();
-    console.log(enemy.x);
+    p1.myShot.reset('left', enemy);
+    enemy.myShot.reset('front', p1);
 }
 
 function updateAll() {
 	moveAll();
 	drawAll();
     if (enemy.attack) {
-        enemy.enemyShot.shotSide = "front";
         enemy.cannonFire();
     }
 }
@@ -63,11 +62,8 @@ function drawAll() {
     p1.draw();
     enemy.draw();
     /// spriteSheet,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
-    if (enemyHit == true) {
-        drawExplosions(explosionPic,0,50,50,enemy.enemyShot.lastShotX,enemy.enemyShot.lastShotY,50,50); 
-    }  
-    if (playerHit == true) {
-        drawExplosions(explosionPic,0,50,50,p1.myShot.lastShotX,p1.myShot.lastShotY,50,50);
+    if (hit == true) {
+        drawExplosions(explosionPic,0,50,50,lastShotX,lastShotY,50,50); 
     }
     canvasContext.restore();
 }

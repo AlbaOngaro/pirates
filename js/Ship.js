@@ -3,8 +3,8 @@ const DRIVE_POWER = 0.04;
 const REVERSE_POWER = 0.025;
 const ATTACK_RANGE = 50;
 var isShooting = false;
-var circle = {radius:30, angle:0};
-var ball = {x:0, y:0,speed:0};
+var circle = {radius:40, angle:0};
+var ball = {x:0, y:0,speed:0,ang:0};
 
 function shipClass() {
     
@@ -111,8 +111,10 @@ function shipClass() {
             
             if (this.keyHeld_AimLeft) {
                 ball.speed = -0.1;
+                ball.ang -= 0.1;
             } else if (this.keyHeld_AimRight) {
                 ball.speed = 0.1;
+                ball.ang += 0.1;
             } else {
                 ball.speed = 0;
             }
@@ -165,11 +167,8 @@ function shipClass() {
         
         circle.angle += ball.speed;
         
-        canvasContext.fillStyle = "#000000";
-        canvasContext.beginPath();
-        canvasContext.arc(ball.x,ball.y,4,0,Math.PI*2,true);
-        canvasContext.closePath();
-        canvasContext.fill();
+        drawBitmapCenteredWithRotation(aimArrow,ball.x,ball.y,ball.ang);
+        
     }
     
     this.draw = function() {

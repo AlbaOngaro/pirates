@@ -1,9 +1,17 @@
+@font-face {
+    font-family: TradeWinds;
+    src: url(./assets/fonts/TradeWinds-Regular.ttf);
+}
 body {
     overflow: hidden;
-    font-family: sans-serif;
+    font-family: tradeWinds;
 }
 h1 {
     text-align: center;
+    width: 800px;
+    margin: 0 auto;
+    display: block;
+    font-size: 40px;
 }
 .nav {
     width: 50%;
@@ -21,13 +29,12 @@ a:hover {
     color: #3c696a;
 }
 p {
-    margin: 30px auto 0 auto;
+    margin: 30px auto;
     display: block;
     width: 800px;
+    text-align: center;
 }
 #gameCanvas {
     margin: 0 auto;
     display: block;
-    transform: translateY(-50%);
-    margin-top: 50vh;
 }

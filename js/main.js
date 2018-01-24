@@ -5,17 +5,15 @@ var ticksPerFrame = 1;
 var hit = false;
 var lastShotX;
 var lastShotY;
+var winner;
 
 var p1 = new shipClass();
-var enemy = new shipClass();
+var enemy = new shipClass(); 
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
-    
-    colorRect(0,0,canvas.width,canvas.height,'black');
-    colorText('LOADING',canvas.width/2,canvas.height/2,'white');
-    
+    loadScreenText();
     loadImages();
     sliderReset();
 }
@@ -36,10 +34,15 @@ function loadLevel(whichLevel){
 }
 
 function updateAll() {
-	moveAll();
-	drawAll();
-    if (enemy.attack) {
-        enemy.cannonFire();
+    if (winner == undefined) {
+        moveAll();
+        drawAll();
+        if (enemy.attack) {
+            enemy.cannonFire();
+        }   
+    } else {
+        drawAll();
+        winnerScreen();
     }
 }
 

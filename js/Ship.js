@@ -3,6 +3,8 @@ const DRIVE_POWER = 0.04;
 const REVERSE_POWER = 0.025;
 const ATTACK_RANGE = 50;
 var isShooting = false;
+var circle = {radius:40, angle:0};
+var ball = {x:0, y:0,speed:0,ang:0};
 
 function shipClass() {
     
@@ -23,23 +25,33 @@ function shipClass() {
     this.fullLife = 60;
     
     this.myShot = new shotClass();
+    this.aimDir = 0;
     
     this.keyHeld_gas = false;
     this.keyHeld_reverse = false;
     this.keyHeld_TurnLeft = false;
     this.keyHeld_TurnRight = false;
     
+    this.keyHeld_AimRight = false;
+    this.keyHeld_AimLeft = false;
+    
     this.controlKeyUp;
     this.controlKeyRight;
     this.controlKeyDown;
     this.controlKeyLeft;
+    this.aimKeyLeft;
+    this.aimKeyRight;
     
-    this.setupInput = function(upKey,rightKey,downKey,leftKey,shotKey) {
+    this.setupInput = function(upKey,rightKey,downKey,leftKey,shotKey,aimLeftKey,aimRightKey) {
         this.controlKeyUp = upKey;
         this.controlKeyRight = rightKey;
         this.controlKeyDown = downKey;
         this.controlKeyLeft = leftKey;
+        
         this.controlKeyFire = shotKey;
+    
+        this.aimKeyLeft = aimLeftKey;
+        this.aimKeyRight = aimRightKey;
     }
     
     this.reset = function(whichImage, shipName, playerTeam) {
@@ -53,8 +65,8 @@ function shipClass() {
             this.x = camPanX + canvas.width/2;
             this.y = camPanY + canvas.height/2;
         } else {
-            this.x = Math.floor((Math.random() * (MAP_COLS*TILE_W-TILE_W)) + TILE_W);
-            this.y = Math.floor((Math.random() * (MAP_ROWS*TILE_H-TILE_H)) + TILE_H);
+            this.x = Math.floor((Math.random() * (MAP_COLS*TILE_W-TILE_W)) + (TILE_W+TILE_W/2));
+            this.y = Math.floor((Math.random() * (MAP_ROWS*TILE_H-TILE_H)) + (TILE_H-TILE_H/2));
         }
         
         this.name = shipName;
@@ -95,7 +107,17 @@ function shipClass() {
             }
             if (this.keyHeld_gas) {
                 this.speed += DRIVE_POWER;
-            } 
+            }
+            
+            if (this.keyHeld_AimLeft) {
+                ball.speed = -0.1;
+                ball.ang -= 0.1;
+            } else if (this.keyHeld_AimRight) {
+                ball.speed = 0.1;
+                ball.ang += 0.1;
+            } else {
+                ball.speed = 0;
+            }
         } 
         
         //enemy movment logic
@@ -131,7 +153,6 @@ function shipClass() {
         }
         
         this.myShot.move();
-        
     }
     
     this.drawLife = function(){
@@ -140,9 +161,23 @@ function shipClass() {
         strokeRect(this.x-(this.fullLife/2),this.y-30,this.fullLife,9,'white',2);
     }
     
+    this.drawAimDirection = function(){
+        ball.x = this.x + Math.cos(circle.angle) * circle.radius;
+        ball.y = this.y + Math.sin(circle.angle) * circle.radius;
+        
+        circle.angle += ball.speed;
+        
+        drawBitmapCenteredWithRotation(aimArrow,ball.x,ball.y,ball.ang);
+        
+    }
+    
     this.draw = function() {
-        drawBitmapCenteredWithRotation(this.myShipPic,this.x,this.y,this.ang,this.cropX);
+        drawBitmapCroppedWithRotation(this.myShipPic,this.x,this.y,this.ang,this.cropX);
         this.drawLife();
+        if (this.playerControlled) {
+            this.drawAimDirection();
+        }
+        //this.drawAimDirection();
         //function used for debugging purpose, this is the damage area
         //colorCircle(this.x,this.y,this.damageAreaRadius,this.areaColor);
         this.myShot.draw();

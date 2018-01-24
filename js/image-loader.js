@@ -3,6 +3,7 @@ var tilePics = [];
 var redShipPic = document.createElement('img');
 var greenShipPic = document.createElement('img');
 var blueShipPic = document.createElement('img');
+var yellowShipPic = document.createElement('img');
 
 var aimArrow = document.createElement('img');
 var shotPic = document.createElement('img');
@@ -33,6 +34,7 @@ function loadImages(){
         {varName: redShipPic, theFile: "Ships/redShip.png"},
         {varName: greenShipPic, theFile: "Ships/greenShip.png"},
         {varName: blueShipPic, theFile:"Ships/blueShip.png"},
+        {varName: yellowShipPic, theFile: "Ships/yellowShip.png"},
          
         {varName: aimArrow, theFile: "Effects/aimArrow.png"},
         {varName: shotPic, theFile: "Parts/cannonBall.png"},

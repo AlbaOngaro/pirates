@@ -17,6 +17,7 @@ function shipClass() {
     this.myShipPic;
     this.name ="Untitled car";
 
+    this.inSightArea = 200;
     this.attackAreaRadius = 130;
     this.damageAreaRadius = 15;
     this.areaColor = 'rgba( 255, 87, 51 ,0.5)';
@@ -65,14 +66,16 @@ function shipClass() {
             this.x = camPanX + canvas.width/2;
             this.y = camPanY + canvas.height/2;
         } else {
-            this.x = Math.floor((Math.random() * canvas.width/2) + canvas.width);
-            this.y = Math.floor((Math.random() * canvas.height/2) + canvas.height);
+            this.x = Math.floor((Math.random() * canvas.width/3) + canvas.width);
+            this.y = Math.floor((Math.random() * canvas.height/3) + canvas.height);
         }
         
         this.name = shipName;
         this.myShipPic = whichImage;
         this.speed = 0;
         
+        this.randomX = Math.floor((Math.random() * (MAP_COLS*TILE_W)-TILE_W) + TILE_W);
+        this.randomY = Math.floor((Math.random() * (MAP_ROWS*TILE_H)-TILE_H) + TILE_H);
     }
     
     this.cannonFire = function() { ////   
@@ -123,8 +126,27 @@ function shipClass() {
         //enemy movment logic
         if (this.playerControlled == false) {
             
-            this.ang = Math.atan2(target.y-this.y,target.x-this.x);
+            if (target.x + target.inSightArea > this.x &&
+                target.x - target.inSightArea < this.x &&
+                target.y + target.inSightArea > this.y &&
+                target.y - target.inSightArea < this.y) {
+               
+                this.ang = Math.atan2(target.y-this.y,target.x-this.x);
+            } else {
+                
+                
+                if (Math.floor(this.x) == this.randomX || Math.floor(this.y) == this.randomY || this.speed < 0.1) {
+                    this.randomX = Math.floor((Math.random() * 1135) + 65);
+                    this.randomY = Math.floor((Math.random() * 845) + 65);
+                }
+                
+                
+                this.ang = Math.atan2(this.randomY-this.y,this.randomX-this.x);
+            
+            }
+            
             this.speed += Math.random() * DRIVE_POWER;
+            console.log(this.speed);
             
             if (target.x + target.attackAreaRadius > this.x &&
                 target.x - target.attackAreaRadius < this.x &&
@@ -132,8 +154,6 @@ function shipClass() {
                 target.y - target.attackAreaRadius < this.y) {
                 this.speed = 0;
                 this.cannonFire();
-            } else {
-                this.attack = false;
             }
         }
         
@@ -179,7 +199,7 @@ function shipClass() {
         }
         //this.drawAimDirection();
         //function used for debugging purpose, this is the damage area
-        //colorCircle(this.x,this.y,this.damageAreaRadius,this.areaColor);
+        //colorCircle(this.randomX,this.randomY,2,'red');
         this.myShot.draw();
     }
     

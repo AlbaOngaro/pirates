@@ -11,8 +11,9 @@ var enemies = [];
 var p1 = new shipClass();
 var enemy1 = new shipClass(); 
 var enemy2 = new shipClass();
+var enemy3 = new shipClass();
 
-enemies.push(enemy1,enemy2);
+enemies.push(enemy1,enemy2,enemy3);
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -34,9 +35,11 @@ function loadLevel(whichLevel){
 	p1.reset(redShipPic,"Ruby",true);
     enemy1.reset(greenShipPic,"Emerald",false);
     enemy2.reset(blueShipPic,"Sapphire",false);
+    enemy3.reset(yellowShipPic, "Diamond", false);
     p1.myShot.reset('left', enemies);
-    enemy1.myShot.reset('front', p1);
+    enemy1.myShot.reset('front',p1);
     enemy2.myShot.reset('front',p1);
+    enemy3.myShot.reset('front',p1);
 }
 
 function updateAll() {

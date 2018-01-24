@@ -70,7 +70,7 @@ function shotClass() {
                 }
 
                 if (this.target.life == 0) {
-                    winner = this.shipFiring.name;
+                    winner = this.shipFiring;
                 }
             }
         } else {
@@ -102,7 +102,7 @@ function shotClass() {
                     }
                     
                     if (enemies.length == 0) {
-                        winner = this.shipFiring.name;
+                        winner = this.shipFiring;
                     }
                 }
             }

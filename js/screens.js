@@ -13,13 +13,16 @@ function loadScreenText(){
 }
 
 function winnerScreen () {
+    var text = winner.name;
     var textColor;
-    if (winner == p1.name) {
+    if (winner.myShipPic == redShipPic) {
         textColor = "#D96257";
-    } else if (winner == enemy1.name) {
+    } else if (winner.myShipPic == greenShipPic) {
         textColor = "#82BE5E";
-    } else if (winner == enemy2.name) {
+    } else if (winner.myShipPic == blueShipPic) {
         textColor = "#6b93b8";
+    } else if (winner.myShipPic == yellowShipPic) {
+        textColor = "#e7ba23";
     }
-    colorText("center","30px TradeWinds", textColor, winner+" Wins!", canvas.width/2,canvas.height/2);
+    colorText("center","30px TradeWinds", textColor, text+" Wins!", canvas.width/2,canvas.height/2);
 }

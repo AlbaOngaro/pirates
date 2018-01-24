@@ -5,6 +5,8 @@ const KEY_D = 68;
 const KEY_LEFT_ARROW = 37;
 const KEY_RIGHT_ARROW = 39;
 const KEY_SPACEBAR = 32;
+const KEY_Y = 89;
+const KEY_N = 78;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -52,16 +54,12 @@ function keyPressed(evt) {
     
     //console.log(evt.keyCode);
     
-   /* if (evt.keyCode == KEY_LEFT_ARROW) {
-        p1.myShot.shotSide = "left";
-    }
-    if (evt.keyCode == KEY_RIGHT_ARROW) {
-        p1.myShot.shotSide = "right";
-    }*/
     if (evt.keyCode == p1.controlKeyFire) {
         p1.cannonFire();
     }
+    
     keySet(evt, p1, true);
+    
     evt.preventDefault();
 }
 

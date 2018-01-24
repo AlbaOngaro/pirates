@@ -8,7 +8,7 @@ var lastShotY;
 var winner;
 
 var p1 = new shipClass();
-var enemy = new shipClass(); 
+var enemy1 = new shipClass(); 
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -28,18 +28,18 @@ function startGame() {
 function loadLevel(whichLevel){
     worldGrid = whichLevel.slice();
 	p1.reset(redShipPic,"Ruby",true);
-    enemy.reset(greenShipPic,"Emerald",false);
-    p1.myShot.reset('left', enemy);
-    enemy.myShot.reset('front', p1);
+    enemy1.reset(greenShipPic,"Emerald",false);
+    p1.myShot.reset('left', enemy1);
+    enemy1.myShot.reset('front', p1);
 }
 
 function updateAll() {
     if (winner == undefined) {
         moveAll();
         drawAll();
-        if (enemy.attack) {
-            enemy.cannonFire();
-        }   
+        if (enemy1.attack) {
+            enemy1.cannonFire();
+        }
     } else {
         drawAll();
         winnerScreen();
@@ -48,8 +48,8 @@ function updateAll() {
 
 function moveAll() {
 	p1.move();
-    /// p1 is the target element, which makes the enemy move against it
-    enemy.move(p1);
+    /// p1 is the target element, which makes the enemy1 move against it
+    enemy1.move(p1);
     sliderMove();
     cameraFollow();
 }
@@ -63,7 +63,7 @@ function drawAll() {
     canvasContext.translate(-camPanX,-camPanY);
 	drawWorld();
     p1.draw();
-    enemy.draw();
+    enemy1.draw();
     /// spriteSheet,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
     if (hit == true) {
         drawExplosions(explosionPic,0,50,50,lastShotX,lastShotY,50,50); 

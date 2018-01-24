@@ -21,6 +21,8 @@ function shotClass() {
     
     this.shootFrom = function(shipFiring, shot_life) {
         
+        //console.log(this.target.constructor == Array);
+        
         this.shipFiring = shipFiring;
         
         this.x = shipFiring.x;
@@ -32,7 +34,6 @@ function shotClass() {
             this.xv = Math.cos(shipFiring.ang) * SHOT_SPEED;
             this.yv = Math.sin(shipFiring.ang) * SHOT_SPEED;
         }
-        
         
         this.shotLife = shot_life;
     }
@@ -46,30 +47,69 @@ function shotClass() {
             this.x = undefined;
             this.y = undefined;
         } 
-        if (this.target.x + this.target.damageAreaRadius > this.x &&
-            this.target.x - this.target.damageAreaRadius < this.x &&
-            this.target.y + this.target.damageAreaRadius > this.y &&
-            this.target.y - this.target.damageAreaRadius < this.y) {
-            
-            lastShotX = this.x;
-            lastShotY = this.y;
-            
-            this.shotLife = 0;
+        
+        if (this.target.constructor != Array) {
+            if (this.target.x + this.target.damageAreaRadius > this.x &&
+                this.target.x - this.target.damageAreaRadius < this.x &&
+                this.target.y + this.target.damageAreaRadius > this.y &&
+                this.target.y - this.target.damageAreaRadius < this.y) {
 
-            hit = true;
-            frameIndex = 0;
-            if (this.target.life > 0) {
-                this.target.life -= 5;
-            } 
-            
-            if (this.target.life <= 30) {
-                this.target.cropX = 50;
+                lastShotX = this.x;
+                lastShotY = this.y;
+
+                this.shotLife = 0;
+
+                hit = true;
+                frameIndex = 0;
+                if (this.target.life > 0) {
+                    this.target.life -= 5;
+                } 
+
+                if (this.target.life <= 30) {
+                    this.target.cropX = 50;
+                }
+
+                if (this.target.life == 0) {
+                    winner = this.shipFiring.name;
+                }
+            }
+        } else {
+           
+            for (var i=0; i<this.target.length;i++) {
+                if (this.target[i].x + this.target[i].damageAreaRadius > this.x &&
+                    this.target[i].x - this.target[i].damageAreaRadius < this.x &&
+                    this.target[i].y + this.target[i].damageAreaRadius > this.y &&
+                    this.target[i].y - this.target[i].damageAreaRadius < this.y) {
+
+                    lastShotX = this.x;
+                    lastShotY = this.y;
+
+                    this.shotLife = 0;
+
+                    hit = true;
+                    frameIndex = 0;
+                    if (this.target[i].life > 0) {
+                        this.target[i].life -= 5;
+                    } 
+
+                    if (this.target[i].life <= 30) {
+                        this.target[i].cropX = 50;
+                    }
+                    
+                    if (this.target[i].life == 0) {
+                        console.log(i);
+                        enemies.splice(i,1);
+                    }
+                    
+                    if (enemies.length == 0) {
+                        winner = this.shipFiring.name;
+                    }
+                }
             }
             
-            if (this.target.life == 0) {
-                winner = this.shipFiring.name;
-            }
+            
         }
+        
     }
 
     this.draw = function() {

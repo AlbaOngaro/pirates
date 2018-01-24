@@ -16,8 +16,10 @@ function winnerScreen () {
     var textColor;
     if (winner == p1.name) {
         textColor = "#D96257";
-    } else {
+    } else if (winner == enemy1.name) {
         textColor = "#82BE5E";
+    } else if (winner == enemy2.name) {
+        textColor = "#6b93b8";
     }
     colorText("center","30px TradeWinds", textColor, winner+" Wins!", canvas.width/2,canvas.height/2);
 }

@@ -6,9 +6,13 @@ var hit = false;
 var lastShotX;
 var lastShotY;
 var winner;
+var enemies = [];
 
 var p1 = new shipClass();
 var enemy1 = new shipClass(); 
+var enemy2 = new shipClass();
+
+enemies.push(enemy1,enemy2);
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -29,17 +33,16 @@ function loadLevel(whichLevel){
     worldGrid = whichLevel.slice();
 	p1.reset(redShipPic,"Ruby",true);
     enemy1.reset(greenShipPic,"Emerald",false);
-    p1.myShot.reset('left', enemy1);
+    enemy2.reset(blueShipPic,"Sapphire",false);
+    p1.myShot.reset('left', enemies);
     enemy1.myShot.reset('front', p1);
+    enemy2.myShot.reset('front',p1);
 }
 
 function updateAll() {
     if (winner == undefined) {
         moveAll();
         drawAll();
-        if (enemy1.attack) {
-            enemy1.cannonFire();
-        }
     } else {
         drawAll();
         winnerScreen();
@@ -49,7 +52,9 @@ function updateAll() {
 function moveAll() {
 	p1.move();
     /// p1 is the target element, which makes the enemy1 move against it
-    enemy1.move(p1);
+    for (var i=0; i<enemies.length;i++) {
+       enemies[i].move(p1); 
+    }
     sliderMove();
     cameraFollow();
 }
@@ -63,7 +68,9 @@ function drawAll() {
     canvasContext.translate(-camPanX,-camPanY);
 	drawWorld();
     p1.draw();
-    enemy1.draw();
+    for (var i=0; i<enemies.length;i++) {
+       enemies[i].draw(); 
+    }
     /// spriteSheet,cropY,spriteW,spriteH,spriteX,spriteY,spriteW,spriteH
     if (hit == true) {
         drawExplosions(explosionPic,0,50,50,lastShotX,lastShotY,50,50); 

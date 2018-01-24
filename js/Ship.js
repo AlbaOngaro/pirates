@@ -65,8 +65,8 @@ function shipClass() {
             this.x = camPanX + canvas.width/2;
             this.y = camPanY + canvas.height/2;
         } else {
-            this.x = Math.floor((Math.random() * (MAP_COLS*TILE_W-TILE_W)) + (TILE_W+TILE_W/2));
-            this.y = Math.floor((Math.random() * (MAP_ROWS*TILE_H-TILE_H)) + (TILE_H-TILE_H/2));
+            this.x = Math.floor((Math.random() * canvas.width/2) + canvas.width);
+            this.y = Math.floor((Math.random() * canvas.height/2) + canvas.height);
         }
         
         this.name = shipName;
@@ -124,7 +124,7 @@ function shipClass() {
         if (this.playerControlled == false) {
             
             this.ang = Math.atan2(target.y-this.y,target.x-this.x);
-            this.speed += DRIVE_POWER/2.5; 
+            this.speed += Math.random() * DRIVE_POWER;
             
             if (target.x + target.attackAreaRadius > this.x &&
                 target.x - target.attackAreaRadius < this.x &&

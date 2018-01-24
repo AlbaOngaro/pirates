@@ -65,8 +65,8 @@ function shipClass() {
             this.x = camPanX + canvas.width/2;
             this.y = camPanY + canvas.height/2;
         } else {
-            this.x = Math.floor((Math.random() * (MAP_COLS*TILE_W-TILE_W)) + TILE_W);
-            this.y = Math.floor((Math.random() * (MAP_ROWS*TILE_H-TILE_H)) + TILE_H);
+            this.x = Math.floor((Math.random() * (MAP_COLS*TILE_W-TILE_W)) + (TILE_W+TILE_W/2));
+            this.y = Math.floor((Math.random() * (MAP_ROWS*TILE_H-TILE_H)) + (TILE_H-TILE_H/2));
         }
         
         this.name = shipName;
@@ -151,7 +151,6 @@ function shipClass() {
         }
         
         this.myShot.move();
-        
     }
     
     this.drawLife = function(){
@@ -172,6 +171,7 @@ function shipClass() {
         canvasContext.closePath();
         canvasContext.fill();
     }
+    
     this.draw = function() {
         drawBitmapCroppedWithRotation(this.myShipPic,this.x,this.y,this.ang,this.cropX);
         this.drawLife();

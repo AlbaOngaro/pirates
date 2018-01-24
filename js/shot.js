@@ -7,6 +7,7 @@ function shotClass() {
     
     this.shotSide = "right";
     this.target;
+    this.shipFiring;
     
     this.reset = function(side,target) {
         this.shotLife = 0;
@@ -19,6 +20,8 @@ function shotClass() {
     }
     
     this.shootFrom = function(shipFiring, shot_life) {
+        
+        this.shipFiring = shipFiring;
         
         this.x = shipFiring.x;
         this.y = shipFiring.y;
@@ -61,6 +64,10 @@ function shotClass() {
             
             if (this.target.life <= 30) {
                 this.target.cropX = 50;
+            }
+            
+            if (this.target.life == 0) {
+                winner = this.shipFiring.name;
             }
         }
     }

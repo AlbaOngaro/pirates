@@ -3,7 +3,19 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        'index.js': [
+            './src/js/styles.js',
+            './src/js/GraphicsCommon.js',
+            './src/js/Ship.js',
+            './src/js/shot.js',
+            './src/js/world.js',
+            './src/js/image-loader.js',
+            './src/js/camera.js',
+            './src/js/main.js',
+            './src/js/effects.js'
+        ]
+    },
     output: {
         filename: 'js/app.js',
         path: path.resolve(__dirname, 'build/')

@@ -45,3 +45,4 @@ old/*
 # Ingored file types #
 *.indd
 *.idlk
+node_modules

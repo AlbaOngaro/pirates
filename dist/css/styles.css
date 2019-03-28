@@ -1,0 +1,39 @@
+@font-face {
+  font-family: TradeWinds;
+  src: url(/assets/fonts/c5142aa936d3d65b95a85944ebef62c9.ttf); }
+
+body {
+  overflow: hidden;
+  font-family: tradeWinds; }
+
+h1 {
+  text-align: center;
+  width: 800px;
+  margin: 0 auto;
+  display: block;
+  font-size: 40px; }
+
+.nav {
+  width: 50%;
+  margin: 0 auto;
+  display: block; }
+
+a {
+  margin: 0 auto;
+  display: block;
+  text-align: center;
+  color: cadetblue;
+  text-decoration: none; }
+  a:hover {
+    color: #3c696a; }
+
+p {
+  margin: 30px auto;
+  display: block;
+  width: 800px;
+  text-align: center; }
+
+#gameCanvas {
+  margin: 0 auto;
+  display: block; }
+

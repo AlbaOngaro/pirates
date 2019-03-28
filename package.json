@@ -1,0 +1,45 @@
+{
+  "name": "pirates",
+  "version": "1.0.0",
+  "description": "top view pirate game made with javascript",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "start": "npm run build && node src/backend/index.js",
+    "client": "npx webpack-dev-server --mode development --devtool inline-source-map --hot",
+    "server": "nodemon src/backend/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlbaOngaro/pirates.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlbaOngaro/pirates/issues"
+  },
+  "homepage": "https://github.com/AlbaOngaro/pirates#readme",
+  "dependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "concurrently": "^4.1.0",
+    "copy-webpack-plugin": "^5.0.0",
+    "css-loader": "^2.1.0",
+    "file-loader": "^3.0.1",
+    "mini-css-extract-plugin": "^0.5.0",
+    "node-sass": "^4.11.0",
+    "nodemon": "^1.18.10",
+    "sass-loader": "^7.1.0",
+    "socket.io": "^2.2.0",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.29.5",
+    "webpack-cli": "^3.2.3",
+    "webpack-dev-server": "^3.2.1"
+  },
+  "devDependencies": {
+    "resolve-url-loader": "^3.0.1"
+  }
+}

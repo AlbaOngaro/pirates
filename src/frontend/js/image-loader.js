@@ -68,7 +68,7 @@ function loadImages(){
         if (imageList[i].varName != undefined) {
             beginLoadingImages(imageList[i].varName,imageList[i].theFile);
         } else {
-            loadMapTiles(imageList[i].tileType,imageList[i].theFile);
+            loadMapTiles(imageList[i].tileType, imageList[i].theFile);
         }
         
     }

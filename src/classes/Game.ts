@@ -10,9 +10,9 @@ const TILE_H = 60;
 export class Game {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-
   private images: LoaderImage[];
   private tiles: LoaderImage[];
+  private ships: Ship[] = [];
 
   constructor() {
     const canvas = document.getElementById('app');
@@ -84,6 +84,15 @@ export class Game {
       y: this.canvas.height / 2
     });
 
+    this.ships = [
+      new Ship(this.ctx, {
+        x: 100,
+        y: 100,
+        name: "Ruby",
+        image: this.images[Images.RedShip].image
+      })
+    ];
+
     this.drawAll();
   }
 
@@ -108,14 +117,10 @@ export class Game {
   }
 
   private async drawShips() {
-    const ship = new Ship(this.ctx, {
-      x: 100,
-      y: 100,
-      name: "Ruby",
-      image: this.images[Images.RedShip].image
+    this.ships.forEach(ship => {
+      ship.move();
+      ship.draw();
     });
-
-    ship.draw();
   }
 
   private async drawAll() {

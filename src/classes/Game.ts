@@ -1,7 +1,8 @@
 import { levelOne } from "../constants";
 import { colorRect, colorText } from "../helpers";
-import { Tile } from "../types";
+import { Images, Tiles } from "../types";
 import { Loader, LoaderImage } from "./Loader";
+import { Ship } from "./Ship";
 
 const TILE_W = 60;
 const TILE_H = 60;
@@ -59,12 +60,11 @@ export class Game {
     });
 
     loader.load().then(() => {
-      console.log("Loaded all assets!");
       this.start();
     });
   }
 
-  private start() {
+  private async start() {
     const textColor = "rgba(255,255,255)";
 
     colorRect(this.ctx, {
@@ -84,22 +84,46 @@ export class Game {
       y: this.canvas.height / 2
     });
 
-    setTimeout(() => this.drawWorld(), 2000);
+    this.drawAll();
   }
 
-  private drawWorld() {
-    for (let row = 0; row < levelOne.length; row++) {
-      for (let col = 0; col < levelOne[row].length; col++) {
-        const tileIdx = levelOne[row][col];
+  private async drawWorld() {
+    return new Promise<void>((resolve) => {
+      for (let row = 0; row < levelOne.length; row++) {
+        for (let col = 0; col < levelOne[row].length; col++) {
+          const tileIdx = levelOne[row][col];
 
-        if (tileIdx !== Tile.SandCenter) {
-          const image = this.tiles[Tile.Sea];
-          this.ctx.drawImage(image.image, col * TILE_W, row * TILE_H)
+          if (tileIdx !== Tiles.SandCenter) {
+            const image = this.tiles[Tiles.Sea];
+            this.ctx.drawImage(image.image, col * TILE_W, row * TILE_H)
+          }
+
+          const image = this.tiles[tileIdx];
+          this.ctx.drawImage(image.image, col * TILE_W, row * TILE_H);
         }
-
-        const image = this.tiles[tileIdx];
-        this.ctx.drawImage(image.image, col * TILE_W, row * TILE_H);
       }
-    }
+
+      resolve();
+    })
+  }
+
+  private async drawShips() {
+    const ship = new Ship(this.ctx, {
+      x: 100,
+      y: 100,
+      name: "Ruby",
+      image: this.images[Images.RedShip].image
+    });
+
+    ship.draw();
+  }
+
+  private async drawAll() {
+    this.ctx.save();
+    await this.drawWorld();
+    await this.drawShips();
+    this.ctx.restore()
+
+    requestAnimationFrame(this.drawAll.bind(this));
   }
 }

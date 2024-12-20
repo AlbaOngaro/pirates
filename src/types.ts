@@ -1,4 +1,4 @@
-export enum Tile {
+export enum Tiles {
   Sea = 0,
   SandBottom = 1,
   SandLeft = 2,
@@ -18,6 +18,6 @@ export enum Tile {
 }
 
 
-export enum Image {
+export enum Images {
   RedShip = 0,
 }

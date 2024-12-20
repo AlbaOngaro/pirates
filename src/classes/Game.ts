@@ -1,6 +1,7 @@
 import { levelOne, TILE_H, TILE_W } from "../constants";
 import { colorRect, colorText } from "../helpers";
 import { Images, Tiles } from "../types";
+import { Camera } from "./Camera";
 import { Loader, LoaderImage } from "./Loader";
 import { Ship } from "./Ship";
 
@@ -10,6 +11,8 @@ export class Game {
   private images: LoaderImage[];
   private tiles: LoaderImage[];
   private ships: Ship[] = [];
+
+  private camera: Camera;
 
   constructor() {
     const canvas = document.getElementById('app');
@@ -47,6 +50,8 @@ export class Game {
     this.images = [
       { image: new Image(), path: "ships/redShip.png" },
     ]
+
+    this.camera = new Camera(this.canvas);
 
     const loader = new Loader({
       tiles: this.tiles,
@@ -116,12 +121,14 @@ export class Game {
   private async drawShips() {
     this.ships.forEach(ship => {
       ship.move();
+      this.camera.follow(ship);
       ship.draw();
     });
   }
 
   private async drawAll() {
     this.ctx.save();
+    this.ctx.translate(-this.camera.camPanX, -this.camera.camPanY);
     await this.drawWorld();
     await this.drawShips();
     this.ctx.restore()

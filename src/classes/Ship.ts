@@ -20,13 +20,13 @@ const KEY_D = 68;
 
 export class Ship {
   name: string;
+  speed: number = 0;
+  x: number;
+  y: number;
 
-  private x: number;
-  private y: number;
   private image: HTMLImageElement;
   private ctx: CanvasRenderingContext2D;
 
-  private speed: number = 0;
   private turn_rate: number = 0.02;
   private angle: number = 0;
 

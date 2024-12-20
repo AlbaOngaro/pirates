@@ -1,4 +1,6 @@
+import { levelOne, TILE_H, TILE_W } from "../constants";
 import { drawBitmapCroppedWithRotation } from "../helpers";
+import { Tiles } from "../types";
 
 type ShipArguments = {
   x: number;
@@ -75,6 +77,18 @@ export class Ship {
     }
   }
 
+  private shipWorldHandling() {
+    const col = Math.floor(this.x / TILE_W);
+    const row = Math.floor(this.y / TILE_H);
+    const tile = levelOne[row][col];
+
+    if (tile !== Tiles.Sea) {
+      this.x -= Math.cos(this.angle) * this.speed;
+      this.y -= Math.sin(this.angle) * this.speed;
+      this.speed *= -0.5;
+    }
+  }
+
   move() {
     this.speed *= GROUNDSPEED_DECAY_MULT;
     if (this.speed < 0.2) {
@@ -98,6 +112,8 @@ export class Ship {
 
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
+
+    this.shipWorldHandling()
   }
 
   draw() {

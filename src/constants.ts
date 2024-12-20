@@ -12,3 +12,6 @@ export const levelOne: number[][] = [
   [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
   [Tiles.SandBottomLeft, ...Array.from({ length: 18 }).map(() => Tiles.SandBottom), Tiles.SandRight],
 ]
+
+export const TILE_W = 60;
+export const TILE_H = 60;

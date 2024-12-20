@@ -1,11 +1,8 @@
-import { levelOne } from "../constants";
+import { levelOne, TILE_H, TILE_W } from "../constants";
 import { colorRect, colorText } from "../helpers";
 import { Images, Tiles } from "../types";
 import { Loader, LoaderImage } from "./Loader";
 import { Ship } from "./Ship";
-
-const TILE_W = 60;
-const TILE_H = 60;
 
 export class Game {
   private canvas: HTMLCanvasElement;

@@ -1,3 +1,5 @@
+import chalk from 'chalk';
+
 type Tile = string;
 type Coordinates = [y: number, x: number];
 type Up = [1, 0];
@@ -14,7 +16,7 @@ const UP: Up = [1, 0]
 const DOWN: Down = [-1, 0];
 const LEFT: Left = [0, -1]
 const RIGHT: Right = [0, 1]
-const DIRS: Direction[] = [UP, DOWN, LEFT, RIGHT]
+// const DIRS: Direction[] = [UP, DOWN, LEFT, RIGHT]
 
 class CompatibilityOracle {
   private data: Set<string>;
@@ -156,8 +158,8 @@ function valid_dirs(cur_co_ords: Coordinates, matrix_size: [number, number]): Di
   return dirs
 }
 
-function parse_example_matrix(matrix: Tile[][]): [Set<Compatibility>, Weights] {
-  const compatibilities: Set<Compatibility> = new Set();
+export function parse_example_matrix(matrix: Tile[][]): [Set<Compatibility>, Weights] {
+  const compatibilities: Set<string> = new Set();
   const matrix_height = matrix.length;
   const matrix_width = matrix[0].length;
 
@@ -165,20 +167,16 @@ function parse_example_matrix(matrix: Tile[][]): [Set<Compatibility>, Weights] {
 
   for (const [y, row] of matrix.entries()) {
     for (const [x, cur_tile] of row.entries()) {
-      if (!(cur_tile in weights)) {
-        weights[cur_tile] = 0
-      } else {
-        weights[cur_tile] += 1
-      }
+      weights[cur_tile] = (weights[cur_tile] || 0) + 1;
 
       for (const d of valid_dirs([y, x], [matrix_width, matrix_height])) {
         const other_tile = matrix[y + d[0]][x + d[1]]
-        compatibilities.add([cur_tile, other_tile, d])
+        compatibilities.add(JSON.stringify([cur_tile, other_tile, d]))
       }
     }
   }
 
-  return [compatibilities, weights];
+  return [new Set(Array.from(compatibilities).map(comp => JSON.parse(comp))), weights];
 }
 
 class Model {
@@ -216,8 +214,9 @@ class Model {
       for (const d of valid_dirs(cur_co_ords, this.output_size)) {
         const other_co_ords = [cur_co_ords[0] + d[0], cur_co_ords[1] + d[1]] as Coordinates;
 
-        for (const other_tile in new Set(this.wavefunction.get(other_co_ords))) {
+        for (const other_tile of new Set(this.wavefunction.get(other_co_ords))) {
           const other_tile_is_possible = Array.from(cur_possible_tiles).some(curr_tile => this.compatibility_oracle.check(curr_tile, other_tile, d))
+
           if (!other_tile_is_possible) {
             this.wavefunction.constrain(other_co_ords, other_tile);
             stack.push(other_co_ords);
@@ -252,21 +251,34 @@ class Model {
   }
 }
 
+function render_colors(matrix: Tile[][], colors: Record<string, (str: string) => string>) {
+  for (const row of matrix) {
+    const output_row: string[] = []
+    for (const val of row) {
+      const color = colors[val]
+      output_row.push(color(val))
+    }
+
+    console.log(output_row.join(""))
+  }
+}
+
 const input_matrix = [
-  ['5', '3', '3', '3', '3', '3', '3', '3', '3', '6'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['2', '0', '0', '0', '0', '0', '0', '0', '0', '4'],
-  ['7', '1', '1', '1', '1', '1', '1', '1', '1', '8'],
-];
+  ['L', 'L', 'L', 'L'],
+  ['L', 'L', 'L', 'L'],
+  ['L', 'L', 'L', 'L'],
+  ['L', 'C', 'C', 'L'],
+  ['C', 'S', 'S', 'C'],
+  ['S', 'S', 'S', 'S'],
+  ['S', 'S', 'S', 'S'],
+]
 
 const [compatibilities, weights] = parse_example_matrix(input_matrix)
 const compatibility_oracle = new CompatibilityOracle(Array.from(compatibilities))
 const model = new Model([10, 10], weights, compatibility_oracle)
 const output = model.run()
-console.log(output)
+render_colors(output, {
+  'S': chalk.blue,
+  'C': chalk.yellow,
+  'L': chalk.green
+})

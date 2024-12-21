@@ -13,6 +13,7 @@ export class Game {
   private ships: Ship[] = [];
 
   private camera: Camera;
+  private level: number[][];
 
   constructor() {
     const canvas = document.getElementById('app');
@@ -61,6 +62,8 @@ export class Game {
       ]
     });
 
+    this.level = levelOne;
+
     loader.load().then(() => {
       this.start();
     });
@@ -100,9 +103,9 @@ export class Game {
 
   private async drawWorld() {
     return new Promise<void>((resolve) => {
-      for (let row = 0; row < levelOne.length; row++) {
-        for (let col = 0; col < levelOne[row].length; col++) {
-          const tileIdx = levelOne[row][col];
+      for (let row = 0; row < this.level.length; row++) {
+        for (let col = 0; col < this.level[row].length; col++) {
+          const tileIdx = this.level[row][col];
 
           if (tileIdx !== Tiles.SandCenter) {
             const image = this.tiles[Tiles.Sea];

@@ -174,9 +174,10 @@ function valid_dirs(
   return dirs;
 }
 
-export function parse_example_matrix(
-  matrix: Tile[][]
-): { compatibilities: Set<Compatibility>, weights: Weights } {
+export function parse_example_matrix(matrix: Tile[][]): {
+  compatibilities: Set<Compatibility>;
+  weights: Weights;
+} {
   const compatibilities: Set<string> = new Set();
   const matrix_height = matrix.length;
   const matrix_width = matrix[0].length;
@@ -195,7 +196,9 @@ export function parse_example_matrix(
   }
 
   return {
-    compatibilities: new Set(Array.from(compatibilities).map((comp) => JSON.parse(comp))),
+    compatibilities: new Set(
+      Array.from(compatibilities).map((comp) => JSON.parse(comp))
+    ),
     weights
   };
 }

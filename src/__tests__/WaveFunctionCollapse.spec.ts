@@ -13,7 +13,7 @@ describe('WaveFunctionCollapse', () => {
       ['S', 'S', 'S', 'S']
     ];
 
-    const [compatibilities, weights] = parse_example_matrix(input_matrix);
+    const { compatibilities, weights } = parse_example_matrix(input_matrix);
     expect(weights).toEqual({ L: 14, C: 4, S: 10 });
     expect(compatibilities).toEqual(
       new Set([
@@ -54,7 +54,7 @@ describe('WaveFunctionCollapse', () => {
       ['A', 'C', 'C', 'A']
     ];
 
-    const [compatibilities, weights] = parse_example_matrix(input_matrix);
+    const { compatibilities, weights } = parse_example_matrix(input_matrix);
     expect(weights).toEqual({
       A: 16,
       C: 8,

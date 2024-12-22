@@ -1,14 +1,9 @@
-import { input_matrix, MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from '../constants';
+import { levelOne, TILE_H, TILE_W } from '../constants';
 import { colorRect, colorText } from '../helpers';
 import { Images, Tiles } from '../types';
 import { Camera } from './Camera';
 import { Loader, LoaderImage } from './Loader';
 import { Ship } from './Ship';
-import {
-  CompatibilityOracle,
-  Model,
-  parse_example_matrix
-} from './WaveFunctionCollapse';
 
 export class Game {
   private canvas: HTMLCanvasElement;
@@ -65,18 +60,7 @@ export class Game {
       ]
     });
 
-    const [compatibilities, weights] = parse_example_matrix(input_matrix);
-    const compatibility_oracle = new CompatibilityOracle(
-      Array.from(compatibilities)
-    );
-    const model = new Model(
-      [MAP_ROWS, MAP_COLS],
-      weights,
-      compatibility_oracle
-    );
-    const output = model.run();
-
-    this.level = output.map((row) => row.map((cell) => Number(cell)));
+    this.level = levelOne;
 
     loader.load().then(() => {
       this.start();

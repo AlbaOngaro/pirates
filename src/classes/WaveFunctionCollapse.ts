@@ -176,7 +176,7 @@ function valid_dirs(
 
 export function parse_example_matrix(
   matrix: Tile[][]
-): [Set<Compatibility>, Weights] {
+): { compatibilities: Set<Compatibility>, weights: Weights } {
   const compatibilities: Set<string> = new Set();
   const matrix_height = matrix.length;
   const matrix_width = matrix[0].length;
@@ -194,10 +194,10 @@ export function parse_example_matrix(
     }
   }
 
-  return [
-    new Set(Array.from(compatibilities).map((comp) => JSON.parse(comp))),
+  return {
+    compatibilities: new Set(Array.from(compatibilities).map((comp) => JSON.parse(comp))),
     weights
-  ];
+  };
 }
 
 export class Model {

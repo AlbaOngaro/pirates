@@ -129,7 +129,7 @@ export class Game {
 
   private async drawShips() {
     this.ships.forEach(ship => {
-      ship.move();
+      ship.move(this.level);
       this.camera.follow(ship);
       ship.draw();
     });

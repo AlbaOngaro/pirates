@@ -1,5 +1,3 @@
-import chalk from 'chalk';
-
 type Tile = string;
 type Coordinates = [y: number, x: number];
 type Up = [1, 0];
@@ -18,7 +16,7 @@ const LEFT: Left = [0, -1]
 const RIGHT: Right = [0, 1]
 // const DIRS: Direction[] = [UP, DOWN, LEFT, RIGHT]
 
-class CompatibilityOracle {
+export class CompatibilityOracle {
   private data: Set<string>;
 
   constructor(data: Compatibility[]) {
@@ -179,7 +177,7 @@ export function parse_example_matrix(matrix: Tile[][]): [Set<Compatibility>, Wei
   return [new Set(Array.from(compatibilities).map(comp => JSON.parse(comp))), weights];
 }
 
-class Model {
+export class Model {
   output_size: [number, number];
   compatibility_oracle: CompatibilityOracle;
   wavefunction: Wavefunction;
@@ -250,35 +248,3 @@ class Model {
     return min_entropy_co_ords;
   }
 }
-
-function render_colors(matrix: Tile[][], colors: Record<string, (str: string) => string>) {
-  for (const row of matrix) {
-    const output_row: string[] = []
-    for (const val of row) {
-      const color = colors[val]
-      output_row.push(color(val))
-    }
-
-    console.log(output_row.join(""))
-  }
-}
-
-const input_matrix = [
-  ['L', 'L', 'L', 'L'],
-  ['L', 'L', 'L', 'L'],
-  ['L', 'L', 'L', 'L'],
-  ['L', 'C', 'C', 'L'],
-  ['C', 'S', 'S', 'C'],
-  ['S', 'S', 'S', 'S'],
-  ['S', 'S', 'S', 'S'],
-]
-
-const [compatibilities, weights] = parse_example_matrix(input_matrix)
-const compatibility_oracle = new CompatibilityOracle(Array.from(compatibilities))
-const model = new Model([10, 10], weights, compatibility_oracle)
-const output = model.run()
-render_colors(output, {
-  'S': chalk.blue,
-  'C': chalk.yellow,
-  'L': chalk.green
-})

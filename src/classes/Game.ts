@@ -1,4 +1,4 @@
-import { input_matrix, MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from '../constants';
+import { input_matrix, TILE_H, TILE_W } from '../constants';
 import { colorRect, colorText } from '../helpers';
 import { Images, Tiles } from '../types';
 import { Camera } from './Camera';
@@ -18,9 +18,12 @@ export class Game {
   private ships: Ship[] = [];
 
   private camera: Camera;
-  private level: number[][];
+  private level: number[][] = [];
 
   private _quests: string[] = [];
+
+  private map_cols = 0;
+  private map_rows = 0;
 
   constructor() {
     const canvas = document.getElementById('app');
@@ -29,6 +32,13 @@ export class Game {
     }
 
     this.canvas = canvas;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    this.map_rows = Math.ceil(window.innerHeight / TILE_H) * 3;
+    this.map_cols = Math.ceil(window.innerWidth / TILE_W) * 3;
+
     const ctx = this.canvas.getContext('2d');
     if (!ctx) {
       throw new Error('Canvas context not found');
@@ -72,7 +82,7 @@ export class Game {
 
     this.images = [{ image: new Image(), path: 'ships/redShip.png' }];
 
-    this.camera = new Camera(this.canvas);
+    this.camera = new Camera(this.canvas, this.map_cols, this.map_rows);
 
     const loader = new Loader({
       tiles: this.tiles,
@@ -81,19 +91,6 @@ export class Game {
         { name: 'TradeWinds', path: 'assets/fonts/TradeWinds-Regular.ttf' }
       ]
     });
-
-    const { compatibilities, weights } = parse_example_matrix(input_matrix);
-    const compatibility_oracle = new CompatibilityOracle(
-      Array.from(compatibilities)
-    );
-    const model = new Model(
-      [MAP_ROWS, MAP_COLS],
-      weights,
-      compatibility_oracle
-    );
-    const output = model.run();
-
-    this.level = output.map((row) => row.map((cell) => Number(cell)));
 
     loader.load().then(() => {
       this.start();
@@ -135,12 +132,27 @@ export class Game {
       y: this.canvas.height / 2
     });
 
+    const { compatibilities, weights } = parse_example_matrix(input_matrix);
+    const compatibility_oracle = new CompatibilityOracle(
+      Array.from(compatibilities)
+    );
+    const model = new Model(
+      [this.map_cols, this.map_rows],
+      weights,
+      compatibility_oracle
+    );
+    const output = model.run();
+
+    this.level = output.map((row) => row.map((cell) => Number(cell)));
+
     this.ships = [
       new Ship(this.ctx, {
         x: 100,
         y: 100,
         name: 'Ruby',
-        image: this.images[Images.RedShip].image
+        image: this.images[Images.RedShip].image,
+        map_cols: this.map_cols,
+        map_rows: this.map_rows
       })
     ];
 

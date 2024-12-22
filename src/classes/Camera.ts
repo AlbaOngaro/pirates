@@ -1,4 +1,4 @@
-import { MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from '../constants';
+import { TILE_H, TILE_W } from '../constants';
 import { Ship } from './Ship';
 
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X = 100;
@@ -13,8 +13,13 @@ export class Camera {
 
   private canvas: HTMLCanvasElement;
 
-  constructor(canvas: HTMLCanvasElement) {
+  private map_cols = 0;
+  private map_rows = 0;
+
+  constructor(canvas: HTMLCanvasElement, map_cols: number, map_rows: number) {
     this.canvas = canvas;
+    this.map_cols = map_cols;
+    this.map_rows = map_rows;
     this.sliderX = this.canvas.width / 2;
     this.sliderY = this.canvas.height / 2;
   }
@@ -78,8 +83,8 @@ export class Camera {
     if (this.camPanY < 0) {
       this.camPanY = 0;
     }
-    const maxPanRight = MAP_COLS * TILE_W - this.canvas.width;
-    const maxPanTop = MAP_ROWS * TILE_H - this.canvas.height;
+    const maxPanRight = this.map_cols * TILE_W - this.canvas.width;
+    const maxPanTop = this.map_rows * TILE_H - this.canvas.height;
     if (this.camPanX > maxPanRight) {
       this.camPanX = maxPanRight;
     }

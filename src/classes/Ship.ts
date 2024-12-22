@@ -1,4 +1,4 @@
-import { MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from '../constants';
+import { TILE_H, TILE_W } from '../constants';
 import { drawBitmapCroppedWithRotation } from '../helpers';
 import { Tiles } from '../types';
 
@@ -7,6 +7,8 @@ type ShipArguments = {
   y: number;
   name: string;
   image: HTMLImageElement;
+  map_cols: number;
+  map_rows: number;
 };
 
 const GROUNDSPEED_DECAY_MULT = 0.98;
@@ -24,6 +26,9 @@ export class Ship {
   x: number;
   y: number;
 
+  private map_cols: number;
+  private map_rows: number;
+
   private image: HTMLImageElement;
   private ctx: CanvasRenderingContext2D;
 
@@ -39,9 +44,11 @@ export class Ship {
 
   constructor(
     ctx: CanvasRenderingContext2D,
-    { x, y, name, image }: ShipArguments
+    { x, y, name, image, map_cols, map_rows }: ShipArguments
   ) {
     this.ctx = ctx;
+    this.map_cols = map_cols;
+    this.map_rows = map_rows;
 
     this.x = x;
     this.y = y;
@@ -92,9 +99,9 @@ export class Ship {
 
     if (
       tile !== Tiles.Sea ||
-      y == MAP_ROWS - 1 ||
+      y == this.map_rows - 1 ||
       y == 0 ||
-      x == MAP_COLS - 1 ||
+      x == this.map_cols - 1 ||
       x == 0
     ) {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

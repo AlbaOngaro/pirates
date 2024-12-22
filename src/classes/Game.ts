@@ -1,9 +1,14 @@
-import { levelOne, TILE_H, TILE_W } from '../constants';
+import { input_matrix, MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from '../constants';
 import { colorRect, colorText } from '../helpers';
 import { Images, Tiles } from '../types';
 import { Camera } from './Camera';
 import { Loader, LoaderImage } from './Loader';
 import { Ship } from './Ship';
+import {
+  CompatibilityOracle,
+  Model,
+  parse_example_matrix
+} from './WaveFunctionCollapse';
 
 export class Game {
   private canvas: HTMLCanvasElement;
@@ -15,7 +20,7 @@ export class Game {
   private camera: Camera;
   private level: number[][];
 
-  private quests: string[] = [];
+  private _quests: string[] = [];
 
   constructor() {
     const canvas = document.getElementById('app');
@@ -77,11 +82,37 @@ export class Game {
       ]
     });
 
-    this.level = levelOne;
+    const { compatibilities, weights } = parse_example_matrix(input_matrix);
+    const compatibility_oracle = new CompatibilityOracle(
+      Array.from(compatibilities)
+    );
+    const model = new Model(
+      [MAP_ROWS, MAP_COLS],
+      weights,
+      compatibility_oracle
+    );
+    const output = model.run();
+
+    this.level = output.map((row) => row.map((cell) => Number(cell)));
 
     loader.load().then(() => {
       this.start();
     });
+  }
+
+  private set quests(quests: string[]) {
+    const list = document.querySelector('#quests');
+    if (!list) {
+      return;
+    }
+
+    list.innerHTML = quests.map((quest) => `<li>${quest}</li>`).join('');
+
+    this._quests = quests;
+  }
+
+  private get quests() {
+    return this._quests;
   }
 
   private async start() {
@@ -181,9 +212,9 @@ export class Game {
     this.ships.forEach((ship) => {
       ship.move(this.level, {
         [Tiles.Quest]: ([y, x]) => {
-          const accepted = confirm('Quest for you!');
+          const accepted = confirm("The Lost Captain's Map");
           if (accepted) {
-            this.quests.push('Quest for you!');
+            this.quests = [...this.quests, 'Quest for you!'];
           }
 
           this.level[y][x] = Tiles.Sea;

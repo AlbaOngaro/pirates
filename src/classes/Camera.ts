@@ -1,5 +1,5 @@
-import { MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from "../constants";
-import { Ship } from "./Ship";
+import { MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from '../constants';
+import { Ship } from './Ship';
 
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X = 100;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y = 100;
@@ -46,17 +46,25 @@ export class Camera {
     const cameraFocusCenterX = this.camPanX + this.canvas.width / 2;
     const cameraFocusCenterY = this.camPanY + this.canvas.height / 2;
 
-    const playerDistFromCameraFocusX = Math.abs(this.sliderX - cameraFocusCenterX);
-    const playerDistFromCameraFocusY = Math.abs(this.sliderY - cameraFocusCenterY);
+    const playerDistFromCameraFocusX = Math.abs(
+      this.sliderX - cameraFocusCenterX
+    );
+    const playerDistFromCameraFocusY = Math.abs(
+      this.sliderY - cameraFocusCenterY
+    );
 
-    if (playerDistFromCameraFocusX > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X) {
+    if (
+      playerDistFromCameraFocusX > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X
+    ) {
       if (cameraFocusCenterX < this.sliderX) {
         this.camPanX += Math.abs(ship.speed);
       } else {
         this.camPanX -= Math.abs(ship.speed);
       }
     }
-    if (playerDistFromCameraFocusY > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y) {
+    if (
+      playerDistFromCameraFocusY > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y
+    ) {
       if (cameraFocusCenterY < this.sliderY) {
         this.camPanY += Math.abs(ship.speed);
       } else {
@@ -70,8 +78,8 @@ export class Camera {
     if (this.camPanY < 0) {
       this.camPanY = 0;
     }
-    var maxPanRight = MAP_COLS * TILE_W - this.canvas.width;
-    var maxPanTop = MAP_ROWS * TILE_H - this.canvas.height;
+    const maxPanRight = MAP_COLS * TILE_W - this.canvas.width;
+    const maxPanTop = MAP_ROWS * TILE_H - this.canvas.height;
     if (this.camPanX > maxPanRight) {
       this.camPanX = maxPanRight;
     }

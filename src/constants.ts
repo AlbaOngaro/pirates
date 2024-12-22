@@ -1,27 +1,107 @@
-import { Tiles } from "./types";
+import { Tiles } from './types';
 
 export const levelOne: number[][] = [
-  [Tiles.SandTopLeft, ...Array.from({ length: 18 }).map(() => Tiles.SandTop), Tiles.SandTopRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandLeft, ...Array.from({ length: 18 }).map(() => Tiles.Sea), Tiles.SandRight],
-  [Tiles.SandBottomLeft, ...Array.from({ length: 18 }).map(() => Tiles.SandBottom), Tiles.SandBottomRight],
-]
+  [
+    Tiles.SandTopLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.SandTop),
+    Tiles.SandTopRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    Tiles.SandRight
+  ],
+  [
+    Tiles.SandBottomLeft,
+    ...Array.from({ length: 18 }).map(() => Tiles.SandBottom),
+    Tiles.SandBottomRight
+  ]
+];
 
 export const input_matrix = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -39,8 +119,7 @@ export const input_matrix = [
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-].map(row => row.map(cell => cell.toString()))
-
+].map((row) => row.map((cell) => cell.toString()));
 
 export const TILE_W = 60;
 export const TILE_H = 60;

@@ -1,13 +1,13 @@
-import { levelOne, MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from "../constants";
-import { drawBitmapCroppedWithRotation } from "../helpers";
-import { Tiles } from "../types";
+import { MAP_COLS, MAP_ROWS, TILE_H, TILE_W } from '../constants';
+import { drawBitmapCroppedWithRotation } from '../helpers';
+import { Tiles } from '../types';
 
 type ShipArguments = {
   x: number;
   y: number;
   name: string;
   image: HTMLImageElement;
-}
+};
 
 const GROUNDSPEED_DECAY_MULT = 0.98;
 const DRIVE_POWER = 0.04;
@@ -35,7 +35,10 @@ export class Ship {
   private leftHeld: boolean = false;
   private rightHeld: boolean = false;
 
-  constructor(ctx: CanvasRenderingContext2D, { x, y, name, image }: ShipArguments) {
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    { x, y, name, image }: ShipArguments
+  ) {
     this.ctx = ctx;
 
     this.x = x;
@@ -82,7 +85,13 @@ export class Ship {
     const y = Math.floor(this.y / TILE_H);
     const tile = world[y][x];
 
-    if (tile !== Tiles.Sea || y == MAP_ROWS - 1 || y == 0 || x == MAP_COLS - 1 || x == 0) {
+    if (
+      tile !== Tiles.Sea ||
+      y == MAP_ROWS - 1 ||
+      y == 0 ||
+      x == MAP_COLS - 1 ||
+      x == 0
+    ) {
       this.x -= Math.cos(this.angle) * this.speed;
       this.y -= Math.sin(this.angle) * this.speed;
       this.speed *= -0.5;
@@ -113,7 +122,7 @@ export class Ship {
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
 
-    this.handleWorldCollisions(world)
+    this.handleWorldCollisions(world);
   }
 
   draw() {
@@ -122,7 +131,7 @@ export class Ship {
       x: this.x,
       y: this.y,
       angle: this.angle,
-      cropX: 0,
-    })
+      cropX: 0
+    });
   }
 }

@@ -14,10 +14,9 @@ export enum Tiles {
   AngleBottomLeft = 12,
   AngleBottomRight = 13,
   PalmTree = 14,
-  Gold = 15,
+  Gold = 15
 }
 
-
 export enum Images {
-  RedShip = 0,
+  RedShip = 0
 }

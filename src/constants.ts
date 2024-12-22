@@ -8,12 +8,16 @@ export const levelOne: number[][] = [
   ],
   [
     Tiles.SandLeft,
-    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    ...Array.from({ length: 5 }).map(() => Tiles.Sea),
+    Tiles.Quest,
+    ...Array.from({ length: 12 }).map(() => Tiles.Sea),
     Tiles.SandRight
   ],
   [
     Tiles.SandLeft,
-    ...Array.from({ length: 18 }).map(() => Tiles.Sea),
+    ...Array.from({ length: 5 }).map(() => Tiles.Sea),
+    Tiles.Explosion,
+    ...Array.from({ length: 12 }).map(() => Tiles.Sea),
     Tiles.SandRight
   ],
   [

@@ -35,6 +35,8 @@ export class Ship {
   private leftHeld: boolean = false;
   private rightHeld: boolean = false;
 
+  private life: number = 100;
+
   constructor(
     ctx: CanvasRenderingContext2D,
     { x, y, name, image }: ShipArguments
@@ -80,7 +82,10 @@ export class Ship {
     }
   }
 
-  private handleWorldCollisions(world: number[][]) {
+  private handleWorldCollisions(
+    world: number[][],
+    callbacks: Partial<Record<Tiles, (coords: [y: number, x: number]) => void>>
+  ) {
     const x = Math.floor(this.x / TILE_W);
     const y = Math.floor(this.y / TILE_H);
     const tile = world[y][x];
@@ -92,13 +97,36 @@ export class Ship {
       x == MAP_COLS - 1 ||
       x == 0
     ) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const callback = callbacks[tile];
+      if (callback) {
+        this.rightHeld = false;
+        this.leftHeld = false;
+        this.upHeld = false;
+        this.downHeld = false;
+        callback([y, x]);
+        return;
+      }
+
       this.x -= Math.cos(this.angle) * this.speed;
       this.y -= Math.sin(this.angle) * this.speed;
       this.speed *= -0.5;
     }
   }
 
-  move(world: number[][]) {
+  damage(damage: number) {
+    this.life -= damage;
+  }
+
+  heal(heal: number) {
+    this.life += heal;
+  }
+
+  move(
+    world: number[][],
+    callbacks: Partial<Record<Tiles, (coords: [y: number, x: number]) => void>>
+  ) {
     this.speed *= GROUNDSPEED_DECAY_MULT;
     if (this.speed < 0.2) {
       this.turn_rate = 0.015;
@@ -122,7 +150,7 @@ export class Ship {
     this.x += Math.cos(this.angle) * this.speed;
     this.y += Math.sin(this.angle) * this.speed;
 
-    this.handleWorldCollisions(world);
+    this.handleWorldCollisions(world, callbacks);
   }
 
   draw() {

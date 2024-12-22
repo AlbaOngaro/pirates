@@ -15,6 +15,8 @@ export class Game {
   private camera: Camera;
   private level: number[][];
 
+  private quests: string[] = [];
+
   constructor() {
     const canvas = document.getElementById('app');
     if (!(canvas instanceof HTMLCanvasElement)) {
@@ -45,7 +47,22 @@ export class Game {
       { image: new Image(), path: 'tiles/angle_bottom_left.png' },
       { image: new Image(), path: 'tiles/angle_bottom_right.png' },
       { image: new Image(), path: 'tiles/palm.png' },
-      { image: new Image(), path: 'tiles/gold.png' }
+      { image: new Image(), path: 'tiles/gold.png' },
+      {
+        image: new Image(),
+        path: 'effects/explosion.png',
+        animated: true,
+        loop: false,
+        onAnimationEnd: ([y, x]) => {
+          this.level[y][x] = Tiles.Sea;
+        }
+      },
+      {
+        image: new Image(),
+        path: 'effects/quest.png',
+        animated: true,
+        loop: true
+      }
     ];
 
     this.images = [{ image: new Image(), path: 'ships/redShip.png' }];
@@ -96,22 +113,63 @@ export class Game {
       })
     ];
 
-    this.drawAll();
+    this.drawAll(0);
   }
 
-  private async drawWorld() {
+  private async drawWorld(delta: number) {
     return new Promise<void>((resolve) => {
-      for (let row = 0; row < this.level.length; row++) {
-        for (let col = 0; col < this.level[row].length; col++) {
-          const tileIdx = this.level[row][col];
+      for (let y = 0; y < this.level.length; y++) {
+        for (let x = 0; x < this.level[y].length; x++) {
+          const tile = this.level[y][x];
+          const image = this.tiles[tile];
 
-          if (tileIdx !== Tiles.SandCenter) {
-            const image = this.tiles[Tiles.Sea];
-            this.ctx.drawImage(image.image, col * TILE_W, row * TILE_H);
+          if (tile !== Tiles.SandCenter) {
+            this.ctx.drawImage(
+              this.tiles[Tiles.Sea].image,
+              x * TILE_W,
+              y * TILE_H
+            );
           }
 
-          const image = this.tiles[tileIdx];
-          this.ctx.drawImage(image.image, col * TILE_W, row * TILE_H);
+          if (image.animated) {
+            if (image.loop) {
+              const frame = Math.floor(delta / 275) % 3;
+              const cropX = frame * TILE_W;
+              this.ctx.drawImage(
+                image.image,
+                cropX,
+                0,
+                TILE_W,
+                TILE_H,
+                x * TILE_W,
+                y * TILE_H,
+                TILE_W,
+                TILE_H
+              );
+              continue;
+            }
+
+            const cropX = Math.floor(delta / 100) * TILE_W;
+            if (cropX > image.image.width) {
+              image.onAnimationEnd?.([y, x]);
+              continue;
+            }
+
+            this.ctx.drawImage(
+              image.image,
+              cropX,
+              0,
+              TILE_W,
+              TILE_H,
+              x * TILE_W,
+              y * TILE_H,
+              TILE_W,
+              TILE_H
+            );
+            continue;
+          }
+
+          this.ctx.drawImage(image.image, x * TILE_W, y * TILE_H);
         }
       }
 
@@ -121,16 +179,29 @@ export class Game {
 
   private async drawShips() {
     this.ships.forEach((ship) => {
-      ship.move(this.level);
+      ship.move(this.level, {
+        [Tiles.Quest]: ([y, x]) => {
+          const accepted = confirm('Quest for you!');
+          if (accepted) {
+            this.quests.push('Quest for you!');
+          }
+
+          this.level[y][x] = Tiles.Sea;
+        },
+        [Tiles.Explosion]: ([y, x]) => {
+          ship.damage(10);
+          this.level[y][x] = Tiles.Sea;
+        }
+      });
       this.camera.follow(ship);
       ship.draw();
     });
   }
 
-  private async drawAll() {
+  private async drawAll(delta: number) {
     this.ctx.save();
     this.ctx.translate(-this.camera.camPanX, -this.camera.camPanY);
-    await this.drawWorld();
+    await this.drawWorld(delta);
     await this.drawShips();
     this.ctx.restore();
 

@@ -1,6 +1,9 @@
 export type LoaderImage = {
   image: HTMLImageElement;
   path: string;
+  animated?: boolean;
+  loop?: boolean;
+  onAnimationEnd?: (coords: [y: number, x: number]) => void;
 };
 
 export type LoaderFonts = {

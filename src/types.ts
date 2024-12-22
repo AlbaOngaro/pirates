@@ -14,7 +14,9 @@ export enum Tiles {
   AngleBottomLeft = 12,
   AngleBottomRight = 13,
   PalmTree = 14,
-  Gold = 15
+  Gold = 15,
+  Explosion = 16,
+  Quest = 17
 }
 
 export enum Images {

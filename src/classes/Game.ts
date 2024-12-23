@@ -1,14 +1,12 @@
-import { input_matrix, TILE_H, TILE_W } from '../constants';
+import { TILE_H, TILE_W } from '../constants';
 import { colorRect, colorText } from '../helpers';
 import { Images, Tiles } from '../types';
 import { Camera } from './Camera';
 import { Loader, LoaderImage } from './Loader';
 import { Ship } from './Ship';
-import {
-  CompatibilityOracle,
-  Model,
-  parse_example_matrix
-} from './WaveFunctionCollapse';
+
+import MyWorker from '../worker?worker';
+import { Message } from '../worker';
 
 export class Game {
   private canvas: HTMLCanvasElement;
@@ -112,6 +110,20 @@ export class Game {
     return this._quests;
   }
 
+  private getValidShipCoords(): [y: number, x: number] {
+    const x =
+      Math.floor((Math.random() * (window.innerWidth - 1 + 1)) / TILE_W) + 1;
+    const y =
+      Math.floor((Math.random() * (window.innerHeight - 1 + 1)) / TILE_H) + 1;
+
+    const tile = this.level[y][x];
+    if (tile !== Tiles.Sea) {
+      return this.getValidShipCoords();
+    }
+
+    return [y * TILE_H, x * TILE_W];
+  }
+
   private async start() {
     const textColor = 'rgba(255,255,255)';
 
@@ -132,31 +144,40 @@ export class Game {
       y: this.canvas.height / 2
     });
 
-    const { compatibilities, weights } = parse_example_matrix(input_matrix);
-    const compatibility_oracle = new CompatibilityOracle(
-      Array.from(compatibilities)
-    );
-    const model = new Model(
-      [this.map_cols, this.map_rows],
-      weights,
-      compatibility_oracle
-    );
-    const output = model.run();
-
-    this.level = output.map((row) => row.map((cell) => Number(cell)));
-
-    this.ships = [
-      new Ship(this.ctx, {
-        x: 100,
-        y: 100,
-        name: 'Ruby',
-        image: this.images[Images.RedShip].image,
+    const worker = new MyWorker();
+    worker.postMessage({
+      type: 'GENERATE_WORLD',
+      payload: {
         map_cols: this.map_cols,
         map_rows: this.map_rows
-      })
-    ];
+      }
+    });
+    console.log('Message posted to worker');
+    worker.onmessage = (e) => {
+      const message = e.data as Message;
+      console.log('Message received from worker', message);
 
-    this.drawAll(0);
+      switch (message.type) {
+        case 'WORLD_GENERATED': {
+          this.level = message.payload.world;
+          const [y, x] = this.getValidShipCoords();
+
+          this.ships = [
+            new Ship(this.ctx, {
+              x,
+              y,
+              name: 'Ruby',
+              image: this.images[Images.RedShip].image,
+              map_cols: this.map_cols,
+              map_rows: this.map_rows
+            })
+          ];
+
+          this.drawAll(0);
+          break;
+        }
+      }
+    };
   }
 
   private async drawWorld(delta: number) {
